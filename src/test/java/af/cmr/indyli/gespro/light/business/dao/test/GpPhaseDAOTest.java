@@ -11,9 +11,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpPhaseDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
+import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpPhaseDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
@@ -27,10 +29,13 @@ public class GpPhaseDAOTest {
 	private IGpPhaseDAO phaseDAO = new GpPhaseDAOImpl();
 	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
 	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
+	private IGpOrganizationDAO organizationDAO = new GpOrganizationDAOImpl();
+
 	private GpProjectManager pmTest;
 	private GpOrganization orgTest;
 	private GpProject pjTest;
 	private Integer phaseIdForAllTest;
+	private Integer createPhaseId;
 
 	@Test
 	public void testCreatePhaseWithSuccess() {
@@ -46,6 +51,8 @@ public class GpPhaseDAOTest {
 		phase.setCreationDate(new Date());
 		phase.setGpProject(pjTest);
 		phase = this.phaseDAO.create(phase);
+
+		this.createPhaseId = phase.getId();
 
 		Assert.assertNotNull(phase.getId());
 	}
@@ -64,7 +71,6 @@ public class GpPhaseDAOTest {
 	public void testFindByIdWithSuccess() {
 		// Given
 		Integer phaseId = this.phaseIdForAllTest;
-
 		// When
 		GpPhase phase = this.phaseDAO.findById(phaseId);
 		// Then
@@ -73,13 +79,14 @@ public class GpPhaseDAOTest {
 
 	@Test
 	public void testDeletePhaseWithSuccess() {
-		// Given
 		Integer phaseId = this.phaseIdForAllTest;
+
 		// When
-		Assert.assertNotNull(phaseId);
-		GpProject phase = this.projectDAO.findById(phaseId);
+		this.empDAO.deleteById(phaseId);
+
 		// Then
-		Assert.assertNotNull(phase);
+		GpPhase phase = this.phaseDAO.findById(phaseId);
+		Assert.assertNull(phase);
 
 	}
 
@@ -110,8 +117,13 @@ public class GpPhaseDAOTest {
 		organization.setName("Big Org");
 		organization.setAdrWeb("bigorg.com");
 		organization.setContactEmail("big@org.com");
+		organization.setContactName("CName");
 		organization.setPhoneNumber(7895);
-		organization.setId(1);// à remplacer par org from daoOrganization
+		organization = organizationDAO.create(organization);
+
+		this.orgTest = new GpOrganization();
+		this.orgTest = organization;
+		Assert.assertNotNull(this.orgTest.getId());
 
 		this.orgTest = new GpOrganization();
 		this.orgTest = organization;
@@ -154,10 +166,14 @@ public class GpPhaseDAOTest {
 	public void deleteAllEntityAfter() {
 
 		this.phaseDAO.findById(this.phaseIdForAllTest);
+		if (!Objects.isNull(this.createPhaseId)) {
+			this.phaseDAO.deleteById(this.createPhaseId);
+		}
 		if (!Objects.isNull(this.pmTest.getId())) {
 			this.empDAO.deleteById(this.pmTest.getId());
 		}
 		if (!Objects.isNull(this.orgTest)) {
+			this.organizationDAO.deleteById(this.orgTest.getId());
 		}
 		if (!Objects.isNull(this.pmTest.getId())) {
 			this.projectDAO.deleteById(this.pjTest.getId());

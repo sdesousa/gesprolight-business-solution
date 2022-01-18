@@ -11,8 +11,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
+import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
@@ -23,6 +25,7 @@ public class GpProjectDAOTest {
 
 	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
 	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
+	private IGpOrganizationDAO organizationDAO = new GpOrganizationDAOImpl();
 
 	private Integer pjIdForAllTest = null;
 	private Integer pjIdCreateTest = null;
@@ -113,8 +116,9 @@ public class GpProjectDAOTest {
 		organization.setName("Big Org");
 		organization.setAdrWeb("bigorg.com");
 		organization.setContactEmail("big@org.com");
+		organization.setContactName("CName");
 		organization.setPhoneNumber(7895);
-		organization.setId(1);// à remplacer par org from daoOrganization
+		organization = organizationDAO.create(organization);
 
 		this.orgTest = new GpOrganization();
 		this.orgTest = organization;
@@ -141,9 +145,15 @@ public class GpProjectDAOTest {
 
 	@After
 	public void deleteAllEntityAfter() {
-		this.empDAO.deleteById(this.pjIdCreateTest);
-		if (!Objects.isNull(this.pmTest.getId())) {
+		this.projectDAO.deleteById(this.pjIdForAllTest);
+		if (!Objects.isNull(this.pjIdCreateTest)) {
+			this.projectDAO.deleteById(pjIdCreateTest);
+		}
+		if (!Objects.isNull(this.pmTest)) {
 			this.empDAO.deleteById(this.pmTest.getId());
+		}
+		if (!Objects.isNull(this.orgTest)) {
+			this.empDAO.deleteById(this.orgTest.getId());
 		}
 	}
 
