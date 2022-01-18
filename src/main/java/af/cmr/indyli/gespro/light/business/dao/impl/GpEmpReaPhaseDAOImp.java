@@ -21,8 +21,9 @@ public class GpEmpReaPhaseDAOImp implements IGpEmpReaPhaseDAO {
 		String REQ_SQL = "INSERT INTO  GP_EMP_REA_PHASE (CREATION_DATE, PHASE_ID, EMP_ID ) VALUES (?, ?, ? )";
 		Object[] tabParam = { new Date(), empReaPhase.getGpPhase().getId(), empReaPhase.getGpEmployee().getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
-		Integer empReaPhaseId = entityManager.findIdByAnyColumn("GP_EMP_REA_PHASE", "CREATION_DATE",
-				empReaPhase.getCreationDate(), "ASSO_REA_ID");
+
+		Integer empReaPhaseId = entityManager.findIdByAnyColumn("GP_EMP_REA_PHASE", "EMP_ID",
+				empReaPhase.getGpEmployee().getId(), "ASSO_REA_ID");
 		empReaPhase.setId(empReaPhaseId);
 		return empReaPhase;
 	}

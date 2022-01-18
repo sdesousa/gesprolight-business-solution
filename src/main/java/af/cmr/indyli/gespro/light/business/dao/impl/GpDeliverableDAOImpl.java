@@ -91,7 +91,7 @@ public class GpDeliverableDAOImpl implements IGpDeliverableDAO {
 			try {
 				while (resultat.next()) {
 
-					String delCode = resultat.getString("PROJECT_CODE");
+					String delCode = resultat.getString("DEL_CODE");
 					String delPath = resultat.getString("DEL_PATH");
 					String description = resultat.getString("DESCRIPTION");
 					Date creationDate = resultat.getDate("CREATION_DATE");
