@@ -32,9 +32,9 @@ public class GpOrganizationDAOImpl implements IGpOrganizationDAO {
 	}
 
 	public void update(GpOrganization org) {
-		String REQ_SQL = "UPDATE  GP_ORGANIZATION SET ORG_CODE=?, NAME=?, PHONE_NUMBER=?,CONTACT_NAME=?, CONTACT_EMAIL=?, ADR_WEB=?";
+		String REQ_SQL = "UPDATE  GP_ORGANIZATION SET ORG_CODE=?, NAME=?, PHONE_NUMBER=?,CONTACT_NAME=?, CONTACT_EMAIL=?, ADR_WEB=?  WHERE ORG_ID=?";
 		Object[] tabParam = { org.getOrgCode(), org.getName(), org.getPhoneNumber(), org.getContactName(),
-				org.getContactEmail(), org.getContactEmail(), org.getAdrWeb() };
+				org.getContactEmail(), org.getAdrWeb(), org.getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 

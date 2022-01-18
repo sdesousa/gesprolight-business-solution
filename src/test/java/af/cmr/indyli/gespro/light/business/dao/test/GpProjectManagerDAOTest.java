@@ -18,10 +18,10 @@ public class GpProjectManagerDAOTest {
 	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
 	private Integer pmIdForAllTest = null;
 	private Integer createPmId = null;
-	
+
 	@Test
 	public void testCreateEmployeeWithSuccess() {
-		//Given
+		// Given
 		GpProjectManager emp = new GpProjectManager();
 		Assert.assertNull(emp.getId());
 		emp.setFileNumber("1024");
@@ -31,52 +31,64 @@ public class GpProjectManagerDAOTest {
 		emp.setPassword("mySecondPassword");
 		emp.setEmail("francois.hollande@gouv.fr");
 		emp.setLogin("francois.hollande");
-		
-		//When
-		emp = empDAO.create(emp) ;
-		//On le sauvegarde pour le supprimer après
+
+		// When
+		emp = empDAO.create(emp);
+		// On le sauvegarde pour le supprimer après
 		this.createPmId = emp.getId();
-		
-		//Then
+
+		// Then
 		Assert.assertNotNull(emp.getId());
 	}
-	
+
 	@Test
 	public void testFindAllEmployeeWithSuccess() {
-		//Given
-		
-		//When 
+		// Given
+
+		// When
 		List<GpProjectManager> emps = this.empDAO.findAll();
-		
-		//Then
-		Assert.assertTrue(emps.size() >0);
+
+		// Then
+		Assert.assertTrue(emps.size() > 0);
 	}
-	
+
 	@Test
 	public void testFindByIdWithSuccess() {
-		//Given
+		// Given
 		Integer empId = this.pmIdForAllTest;
-		
-		//When 
+
+		// When
 		GpEmployee emp = this.empDAO.findById(empId);
-		//Then
+		// Then
 		Assert.assertNotNull(emp);
 	}
-	
+
 	@Test
 	public void testDeleteByIdWithSuccess() {
-		//Given
+		// Given
 		Integer empId = this.pmIdForAllTest;
-		
-		//When 
+
+		// When
 		this.empDAO.deleteById(empId);
-		
-		
-		//Then
+
+		// Then
 		GpEmployee emp = this.empDAO.findById(empId);
 		Assert.assertNull(emp);
 	}
-	
+
+	@Test
+	public void testUpdateAdmin() {
+		// Given
+		GpProjectManager emp = this.empDAO.findById(this.pmIdForAllTest);
+		emp.setPhoneNumber("0001");
+		// When
+		this.empDAO.update(emp);
+		GpProjectManager empUpdate = this.empDAO.findById(this.pmIdForAllTest);
+		// Then
+
+		Assert.assertTrue(empUpdate.getPhoneNumber().equalsIgnoreCase("0001"));
+	}
+
 	@Before
 	public void prepareAllEntityBefore() {
 		GpProjectManager emp = new GpProjectManager();
@@ -88,14 +100,14 @@ public class GpProjectManagerDAOTest {
 		emp.setPassword("mySecondPassword");
 		emp.setEmail("segolene.royal@gouv.fr");
 		emp.setLogin("sego.royal");
-		emp = empDAO.create(emp) ;
+		emp = empDAO.create(emp);
 		this.pmIdForAllTest = emp.getId();
 	}
-	
+
 	@After
 	public void deleteAllEntityAfter() {
 		this.empDAO.deleteById(this.pmIdForAllTest);
-		if(!Objects.isNull(this.createPmId)) {
+		if (!Objects.isNull(this.createPmId)) {
 			this.empDAO.deleteById(this.createPmId);
 		}
 	}

@@ -6,10 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpAddressDAO;
+import af.cmr.indyli.gespro.light.business.dao.IGpEmployeeDAO;
+import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
 import af.cmr.indyli.gespro.light.business.entity.GpAddress;
+import af.cmr.indyli.gespro.light.business.entity.GpEmployee;
 
 public class GpAddressDAOImpl implements IGpAddressDAO {
 	private GpEntityManager entityManager = new GpEntityManager();
+	private IGpOrganizationDAO organizationDAO = new GpOrganizationDAOImpl();
+	private IGpEmployeeDAO<GpEmployee> empDAO = new GpEmployeeDAOImpl();
 
 	public GpAddress create(GpAddress addr) {
 		try {
@@ -17,7 +22,7 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 			this.entityManager.getDbConnect().setAutoCommit(false);
 			// On commence par insérer dans la table mère avant d'inserer dans la table
 			// fille
-			String REQ_SQL = "INSERT INTO GP_ADDRESS (ADDRESS_ID, STREET_NUMBER, STREET_LABEL, ZIP_CODE,COUNTRY, IS_MAIN, ORG_ID, EMP_ID) VALUES (?,?,?,?,?,?,?,?)";
+			String REQ_SQL = "INSERT INTO GP_ADDRESS ( STREET_NUMBER, STREET_LABEL, ZIP_CODE,COUNTRY, IS_MAIN, ORG_ID, EMP_ID) VALUES (?,?,?,?,?,?,?)";
 			Object[] tabParam = { addr.getStreetNumber(), addr.getStreetLabel(), addr.getZipCode(), addr.getCountry(),
 					addr.getIsMain(), addr.getGpOrganization().getId(), addr.getGpEmployee().getId() };
 			this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
@@ -33,9 +38,9 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 	}
 
 	public void update(GpAddress addr) {
-		String REQ_SQL = "UPDATE  GP_ADDRESS SET STREET_NUMBER=?, STREET_LABEL = ?, ZIP_CODE = ? ,`COUNTRY`= ? ,`IS_MAIN`= ? ,`ORG_ID`= ? ,`EMP_ID`= ?   WHERE EMP_ID = ?";
+		String REQ_SQL = "UPDATE  GP_ADDRESS SET STREET_NUMBER=?, STREET_LABEL = ?, ZIP_CODE = ? , COUNTRY = ? , IS_MAIN = ? , ORG_ID = ? , EMP_ID = ?   WHERE ADDRESS_ID = ?";
 		Object[] tabParam = { addr.getStreetNumber(), addr.getStreetLabel(), addr.getZipCode(), addr.getCountry(),
-				addr.getIsMain(), addr.getGpOrganization().getId(), addr.getGpEmployee().getId() };
+				addr.getIsMain(), addr.getGpOrganization().getId(), addr.getGpEmployee().getId(), addr.getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
@@ -85,6 +90,8 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 					Integer zipCode = resultat.getInt("ZIP_CODE");
 					String country = resultat.getString("COUNTRY");
 					Byte isMain = resultat.getByte("IS_MAIN");
+					Integer idOrg = resultat.getInt("ORG_ID");
+					Integer idEmp = resultat.getInt("EMP_ID");
 					foundAddress = new GpAddress();
 					foundAddress.setId(id);
 					foundAddress.setStreetNumber(streetNumber);
@@ -92,6 +99,8 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 					foundAddress.setZipCode(zipCode);
 					foundAddress.setCountry(country);
 					foundAddress.setIsMain(isMain);
+					foundAddress.setGpOrganization(this.organizationDAO.findById(idOrg));
+					foundAddress.setGpEmployee(this.empDAO.findById(idEmp));
 
 				}
 				resultat.close();
@@ -108,7 +117,7 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 
 	@Override
 	public void deleteById(Integer addrId) {
-		String REQ_SQL = "DELETE FROM GP_ADDRESS WHERE ORG_ID = ?";
+		String REQ_SQL = "DELETE FROM GP_ADDRESS WHERE ADDRESS_ID = ?";
 		Object[] tabParam = { addrId };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}

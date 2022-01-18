@@ -3,6 +3,7 @@ package af.cmr.indyli.gespro.light.business.dao.test;
 import java.util.List;
 import java.util.Objects;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +57,19 @@ public class GpOrganizationDAOTest {
 	}
 
 	@Test
+	public void testUpdateAddress() {
+		// Given
+		GpOrganization org = this.organizationDAO.findById(this.orgIdForAllTest);
+		org.setPhoneNumber(100);
+		// When
+		this.organizationDAO.update(org);
+		GpOrganization orgUpdated = this.organizationDAO.findById(org.getId());
+		// Then
+
+		Assert.assertTrue(orgUpdated.getPhoneNumber() == 100);
+	}
+
+	@Test
 	public void testDeleteById() {
 		// Given
 		Integer id = this.orgIdForAllTest;
@@ -63,7 +77,7 @@ public class GpOrganizationDAOTest {
 		this.organizationDAO.deleteById(id);
 		GpOrganization org = this.organizationDAO.findById(id);
 		// Then
-		Assert.assertNull(org.getId());
+		Assert.assertNull(org);
 	}
 
 	@Before
@@ -80,7 +94,7 @@ public class GpOrganizationDAOTest {
 		orgIdForAllTest = org.getId();
 	}
 
-	// @After
+	@After
 	public void deleteAllEntityAfter() {
 		this.organizationDAO.deleteById(this.orgIdForAllTest);
 		if (!Objects.isNull(this.createOrgId)) {
