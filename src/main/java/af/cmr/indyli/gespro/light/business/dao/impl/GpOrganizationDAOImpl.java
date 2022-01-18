@@ -76,7 +76,7 @@ public class GpOrganizationDAOImpl implements IGpOrganizationDAO {
 		String REQ_SQL = "SELECT * FROM GP_ORGANIZATION WHERE ORG_ID = ?";
 		Object[] tabParam = { orgId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpOrganization org = new GpOrganization();
+		GpOrganization org = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -86,7 +86,7 @@ public class GpOrganizationDAOImpl implements IGpOrganizationDAO {
 					String contactName = resultat.getString("CONTACT_NAME");
 					String contactEmail = resultat.getString("CONTACT_EMAIL");
 					String addrWeb = resultat.getString("ADR_WEB");
-
+					org = new GpOrganization();
 					org.setId(orgId);
 					org.setOrgCode(orgCode);
 					org.setName(name);

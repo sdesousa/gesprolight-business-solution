@@ -79,7 +79,7 @@ public class GpBillDAOImpl implements IGpBillDAO {
 		String REQ_SQL = "SELECT * FROM GP_BILL where BILL_ID = ?";
 		Object[] tabParam = { billId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpBill foundBill = new GpBill();
+		GpBill foundBill = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -88,7 +88,7 @@ public class GpBillDAOImpl implements IGpBillDAO {
 					double amount = resultat.getDouble("AMOUNT");
 					String status = resultat.getString("BILL_STATUS");
 					Integer phaseId = resultat.getInt("PHASE_ID");
-
+					foundBill = new GpBill();
 					GpPhaseDAOImpl dao = new GpPhaseDAOImpl();
 					GpPhase phase = new GpPhase();
 					phase = dao.findById(phaseId);

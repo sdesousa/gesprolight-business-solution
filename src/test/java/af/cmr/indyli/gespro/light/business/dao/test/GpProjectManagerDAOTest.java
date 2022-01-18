@@ -47,6 +47,7 @@ public class GpProjectManagerDAOTest {
 		
 		//When 
 		List<GpProjectManager> emps = this.empDAO.findAll();
+		
 		//Then
 		Assert.assertTrue(emps.size() >0);
 	}
@@ -69,6 +70,11 @@ public class GpProjectManagerDAOTest {
 		
 		//When 
 		this.empDAO.deleteById(empId);
+		
+		
+		//Then
+		GpEmployee emp = this.empDAO.findById(empId);
+		Assert.assertNull(emp);
 	}
 	
 	@Before

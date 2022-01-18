@@ -93,7 +93,7 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 		String REQ_SQL = "SELECT * FROM GP_PROJECT where PROJECT_ID = ?";
 		Object[] tabParam = { projectId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpProject foundProject = new GpProject();
+		GpProject foundProject = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -107,7 +107,7 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 					Date updateDate = resultat.getDate("CREATION_DATE");
 					//Integer orgId = resultat.getInt("ORG_ID");
 					Integer empId = resultat.getInt("EMP_ID");
-
+					foundProject = new GpProject();
 					foundProject.setId(projectId);
 					foundProject.setProjectCode(projectCode);
 					foundProject.setName(projectName);

@@ -1,4 +1,4 @@
-package af.cmr.indyli.gespro.light.business.dao.test;
+package af.cmr.indyli.gespro.light.business.service.test;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,18 +8,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import af.cmr.indyli.gespro.light.business.dao.IGpEmployeeDAO;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpEmployeeDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpEmployee;
+import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
+import af.cmr.indyli.gespro.light.business.service.IGpEmployeeService;
+import af.cmr.indyli.gespro.light.business.service.impl.GpEmployeeServiceImpl;
 
-public class GpEmployeeDAOTest {
+public class GpEmployeeServiceTest {
 
-	private IGpEmployeeDAO<GpEmployee> empDAO = new GpEmployeeDAOImpl();
+	private IGpEmployeeService<GpEmployee> empService = new GpEmployeeServiceImpl();
+	
+
 	private Integer empIdForAllTest = null;
 	private Integer createEmpId = null;
 
 	@Test
-	public void testCreateEmployeeWithSuccess() {
+	public void testCreateEmployeeWithSuccess() throws GesproBusinessException {
 		// Given
 		GpEmployee emp = new GpEmployee();
 		Assert.assertNull(emp.getId());
@@ -31,12 +34,38 @@ public class GpEmployeeDAOTest {
 		emp.setEmail("guillaume.peltier@gouv.fr");
 		emp.setLogin("guillaume.peltier");
 
+
 		// When
-		emp = empDAO.create(emp);
+		emp = empService.create(emp);
 		//On le sauvegarde pour le supprimer apres
 		this.createEmpId = emp.getId();
+
 		// Then
 		Assert.assertNotNull(emp.getId());
+	}
+	
+	@Test
+	public void testCreateEmployeeWithException() throws GesproBusinessException {
+		// Given
+
+
+		// When
+		Exception exception = Assert.assertThrows(GesproBusinessException.class, () -> {
+			GpEmployee emp = new GpEmployee();
+			Assert.assertNull(emp.getId());
+			emp.setFileNumber("2001");
+			emp.setLastname("Laurent");
+			emp.setFirstname("FABIUS");
+			emp.setPhoneNumber("0125698745");
+			emp.setPassword("myThirdPassword");
+			emp.setEmail("laurent.fabius@gouv.fr");
+			emp.setLogin("laurent.fabius");
+			empService.create(emp);
+	    });
+		String actualMessage = exception.getMessage();
+
+		// Then
+		Assert.assertTrue(actualMessage.contains("Un employee existe deja avec cet email"));
 	}
 
 	@Test
@@ -44,7 +73,7 @@ public class GpEmployeeDAOTest {
 		// Given
 
 		// When
-		List<GpEmployee> emps = this.empDAO.findAll();
+		List<GpEmployee> emps = this.empService.findAll();
 		// Then
 		Assert.assertTrue(emps.size() > 0);
 	}
@@ -55,7 +84,7 @@ public class GpEmployeeDAOTest {
 		Integer empId = this.empIdForAllTest;
 
 		// When
-		GpEmployee emp = this.empDAO.findById(empId);
+		GpEmployee emp = this.empService.findById(empId);
 		// Then
 		Assert.assertNotNull(emp);
 	}
@@ -64,17 +93,17 @@ public class GpEmployeeDAOTest {
 	public void testDelete() {
 		// Given
 		Integer empId = this.empIdForAllTest;
-		
+
 		// When
-		this.empDAO.deleteById(empId);
-		GpEmployee emp = this.empDAO.findById(empId);
-		
+		this.empService.deleteById(empId);
+		GpEmployee emp = this.empService.findById(empId);
+
 		// Then
 		Assert.assertNull(emp);
 	}
-	
+
 	@Before
-	public void prepareAllEntityBefore() {
+	public void prepareAllEntityBefore() throws GesproBusinessException {
 		GpEmployee emp = new GpEmployee();
 		Assert.assertNull(emp.getId());
 		emp.setFileNumber("2001");
@@ -84,15 +113,15 @@ public class GpEmployeeDAOTest {
 		emp.setPassword("myThirdPassword");
 		emp.setEmail("laurent.fabius@gouv.fr");
 		emp.setLogin("laurent.fabius");
-		emp = empDAO.create(emp) ;
+		emp = empService.create(emp) ;
 		this.empIdForAllTest = emp.getId();
 	}
-	
+
 	@After
 	public void deleteAllEntityAfter() {
-		this.empDAO.deleteById(this.empIdForAllTest);
+		this.empService.deleteById(this.empIdForAllTest);
 		if(!Objects.isNull(this.createEmpId)) {
-			this.empDAO.deleteById(this.createEmpId);
+			this.empService.deleteById(this.createEmpId);
 		}
 	}
 }

@@ -86,7 +86,7 @@ public class GpTechnicianDAOImpl extends GpAbstractEmployeeDAOImpl<GpTechnician>
 		String REQ_SQL = "SELECT * FROM GP_TECHNICIAN AS tc JOIN GP_EMPLOYEE AS emp WHERE tc.EMP_ID=emp.EMP_ID AND tc.EMP_ID = ?";
 		Object[] tabParam = { empId };
 		ResultSet resultat = this.getEntityManager().selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpTechnician foundEmp = new GpTechnician();
+		GpTechnician foundEmp = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -100,6 +100,7 @@ public class GpTechnicianDAOImpl extends GpAbstractEmployeeDAOImpl<GpTechnician>
 					int graduationYear = resultat.getInt("GRADUATION_YEAR");
 					String email = resultat.getString("EMAIL");
 					String login = resultat.getString("LOGIN");
+					foundEmp = new GpTechnician();
 					foundEmp.setId(empId);
 					foundEmp.setFileNumber(fileNumber);
 					foundEmp.setLastname(lastname);

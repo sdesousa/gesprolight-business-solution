@@ -93,7 +93,7 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 		String REQ_SQL = "SELECT * FROM GP_PHASE where PHASE_ID = ?";
 		Object[] tabParam = { phaseId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpPhase foundPhase = new GpPhase();
+		GpPhase foundPhase = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -111,7 +111,7 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 					GpProject project = new GpProject();
 					GpProjectDAOImpl projectDAOImpl = new GpProjectDAOImpl();
 					project = projectDAOImpl.findById(projectId);
-
+					foundPhase = new GpPhase();
 					foundPhase.setId(phaseId);
 					foundPhase.setPhaseCode(phaseCode);
 					foundPhase.setDescription(description);

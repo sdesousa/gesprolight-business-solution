@@ -70,7 +70,7 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 		String REQ_SQL = "SELECT * FROM GP_EMPLOYEE where EMP_ID = ?";
 		Object[] tabParam = {empId};
     	ResultSet resultat = this.getEntityManager().selectAvecParamGenerique(REQ_SQL, tabParam);
-    	GpEmployee foundEmp = new GpEmployee();
+    	GpEmployee foundEmp = null;
     	if (resultat != null) {
             try {
 				while (resultat.next()) {
@@ -82,6 +82,7 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					String email = resultat.getString("EMAIL");
 					String login = resultat.getString("LOGIN");
+					foundEmp = new GpEmployee();
 					foundEmp.setId(empId);
 					foundEmp.setFileNumber(fileNumber);
 					foundEmp.setLastname(lastname);

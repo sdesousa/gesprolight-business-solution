@@ -13,7 +13,7 @@ import af.cmr.indyli.gespro.light.business.entity.GpPhase;
 public class GpDeliverableDAOImpl implements IGpDeliverableDAO {
 
 	private GpEntityManager entityManager = new GpEntityManager();
- 
+
 	@Override
 	public GpDeliverable create(GpDeliverable deliverable) {
 		String REQ_SQL = "INSERT INTO GP_DELIVERABLE (DEL_CODE, LABEL, DESCRIPTION, DEL_PATH, CREATION_DATE, PHASE_ID) VALUES (?,?,?,?,?,?)";
@@ -86,7 +86,7 @@ public class GpDeliverableDAOImpl implements IGpDeliverableDAO {
 		String REQ_SQL = "SELECT * FROM GP_DELIVERABLE where DEL_ID = ?";
 		Object[] tabParam = { deliverableId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpDeliverable foundDel = new GpDeliverable();
+		GpDeliverable foundDel = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -101,7 +101,7 @@ public class GpDeliverableDAOImpl implements IGpDeliverableDAO {
 					GpPhaseDAOImpl dao = new GpPhaseDAOImpl();
 					GpPhase phase = new GpPhase();
 					phase = dao.findById(phaseId);
-
+					foundDel  = new GpDeliverable();
 					foundDel.setId(deliverableId);
 					foundDel.setCreationDate(creationDate);
 					foundDel.setDelCode(delCode);

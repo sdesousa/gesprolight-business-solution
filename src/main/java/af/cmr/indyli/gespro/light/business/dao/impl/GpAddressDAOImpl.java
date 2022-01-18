@@ -75,7 +75,7 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 		String REQ_SQL = "SELECT * FROM GP_ADDRESS where ADDRESS_ID = ?";
 		Object[] tabParam = { addrId };
 		ResultSet resultat = entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpAddress foundEmp = new GpAddress();
+		GpAddress foundAddress = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -85,13 +85,13 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 					Integer zipCode = resultat.getInt("ZIP_CODE");
 					String country = resultat.getString("COUNTRY");
 					Byte isMain = resultat.getByte("IS_MAIN");
-
-					foundEmp.setId(id);
-					foundEmp.setStreetNumber(streetNumber);
-					foundEmp.setStreetLabel(streetLabel);
-					foundEmp.setZipCode(zipCode);
-					foundEmp.setCountry(country);
-					foundEmp.setIsMain(isMain);
+					foundAddress = new GpAddress();
+					foundAddress.setId(id);
+					foundAddress.setStreetNumber(streetNumber);
+					foundAddress.setStreetLabel(streetLabel);
+					foundAddress.setZipCode(zipCode);
+					foundAddress.setCountry(country);
+					foundAddress.setIsMain(isMain);
 
 				}
 				resultat.close();
@@ -99,7 +99,7 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 				e.printStackTrace();
 			}
 		}
-		return foundEmp;
+		return foundAddress;
 	}
 
 	public String getCurrentTableName() {

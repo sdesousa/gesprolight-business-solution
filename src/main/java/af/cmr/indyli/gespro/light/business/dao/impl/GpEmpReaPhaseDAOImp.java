@@ -85,7 +85,7 @@ public class GpEmpReaPhaseDAOImp implements IGpEmpReaPhaseDAO {
 		String REQ_SQL = "SELECT * FROM GP_EMP_REA_PHASE WHERE ASSO_REA_ID = ?";
 		Object[] tabParam = { empReaPhaseId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpEmpReaPhase foundEmpReaPhase = new GpEmpReaPhase();
+		GpEmpReaPhase foundEmpReaPhase = null;
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -103,7 +103,7 @@ public class GpEmpReaPhaseDAOImp implements IGpEmpReaPhaseDAO {
 					GpProjectManagerDAOImpl dao1 = new GpProjectManagerDAOImpl();
 					GpEmployee employee = new GpProjectManager();
 					employee = dao1.findById(empId);
-
+					foundEmpReaPhase = new GpEmpReaPhase();
 					foundEmpReaPhase.setId(id);
 					foundEmpReaPhase.setGpPhase(phase);
 					foundEmpReaPhase.setGpEmployee(employee);
