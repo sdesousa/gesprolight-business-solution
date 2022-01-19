@@ -31,7 +31,7 @@ public class GpEmpReaPhaseDAOImp implements IGpEmpReaPhaseDAO {
 	@Override
 	public void update(GpEmpReaPhase empReaPhase) {
 		String REQ_SQL = "UPDATE GP_EMP_REA_PHASE SET PHASE_ID = ?, EMP_ID = ?  WHERE ASSO_REA_ID = ?";
-		Object[] tabParam = { empReaPhase.getGpPhase().getId(), empReaPhase.getGpEmployee().getId() };
+		Object[] tabParam = { empReaPhase.getGpPhase().getId(), empReaPhase.getGpEmployee().getId(), empReaPhase.getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 

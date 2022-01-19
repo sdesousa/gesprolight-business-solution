@@ -21,6 +21,7 @@ import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpPhaseDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
+import af.cmr.indyli.gespro.light.business.entity.GpBill;
 import af.cmr.indyli.gespro.light.business.entity.GpDeliverable;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 import af.cmr.indyli.gespro.light.business.entity.GpPhase;
@@ -84,6 +85,18 @@ public class GpDeliverableDAOTest {
 		GpDeliverable deliverable = this.deliverableDAO.findById(deliverableId);
 		// Then
 		Assert.assertNotNull(deliverable);
+	}
+	
+	@Test
+	public void testUpdatePhaseWithSuccess() {
+		// Given
+		Integer delId = this.deliverableIdForAllTest;
+		Assert.assertNotNull(delId);
+		// When
+
+		GpDeliverable gpDel= this.deliverableDAO.findById(delId);
+		gpDel.setDescription("New Description");
+		this.deliverableDAO.update(gpDel);
 	}
 
 	@Test

@@ -81,6 +81,19 @@ public class GpProjectDAOTest {
 	}
 
 	@Test
+	public void testUpdateProjectsWithSuccess() {
+		// Given
+		Integer projectId = this.pjIdForAllTest;
+		Assert.assertNotNull(projectId);
+		// When
+
+		GpProject gpProject = this.projectDAO.findById(projectId);
+		gpProject.setAmount(8659);
+		projectDAO.update(gpProject);
+		;
+	}
+
+	@Test
 	public void testDeleteProjectWithSuccess() {
 		// Given
 		Integer projectId = this.pjIdForAllTest;

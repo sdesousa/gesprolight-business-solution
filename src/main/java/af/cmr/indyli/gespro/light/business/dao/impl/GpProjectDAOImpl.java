@@ -29,10 +29,10 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 
 	@Override
 	public void update(GpProject project) {
-		String REQ_SQL = "UPDATE GP_PROJECT ,PROJECT_CODE=?,NAME=?,DESCRIPTION=?,START_DATE=?,END_DATE=?,AMOUNT=?,UPDATE_DATE=?,ORG_ID=?,EMP_ID=?  WHERE PROJECT_ID = ?";
+		String REQ_SQL = "UPDATE GP_PROJECT SET PROJECT_CODE=?, NAME=?, DESCRIPTION=?, START_DATE=?, END_DATE=?, AMOUNT=?, UPDATE_DATE=?, ORG_ID=?, EMP_ID=?  WHERE PROJECT_ID = ?";
 		Object[] tabParam = { project.getProjectCode(), project.getName(), project.getDescription(),
 				project.getStartDate(), project.getEndDate(), project.getAmount(), new Date(),
-				project.getGpOrganization(), project.getGpChefProjet(), project.getId() };
+				project.getGpOrganization().getId(), project.getGpChefProjet().getId(), project.getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
@@ -53,7 +53,7 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 					double amount = resultat.getDouble("AMOUNT");
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					Date updateDate = resultat.getDate("CREATION_DATE");
-					//Integer orgId = resultat.getInt("ORG_ID");
+					Integer orgId = resultat.getInt("ORG_ID");
 					Integer empId = resultat.getInt("EMP_ID");
 					GpProject foundProject = new GpProject();
 
@@ -66,7 +66,10 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 					foundProject.setAmount(amount);
 					foundProject.setCreationDate(creationDate);
 					foundProject.setUpdateDate(updateDate);
-					foundProject.setGpOrganization(new GpOrganization());
+
+					GpOrganizationDAOImpl dao = new GpOrganizationDAOImpl();
+					GpOrganization myOrganization = dao.findById(orgId);
+					foundProject.setGpOrganization(myOrganization);
 
 					GpProjectManagerDAOImpl projectManagerDAOImpl = new GpProjectManagerDAOImpl();
 					foundProject.setGpChefProjet(projectManagerDAOImpl.findById(empId));
@@ -105,7 +108,7 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 					double amount = resultat.getDouble("AMOUNT");
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					Date updateDate = resultat.getDate("CREATION_DATE");
-					//Integer orgId = resultat.getInt("ORG_ID");
+					Integer orgId = resultat.getInt("ORG_ID");
 					Integer empId = resultat.getInt("EMP_ID");
 					foundProject = new GpProject();
 					foundProject.setId(projectId);
@@ -117,7 +120,10 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 					foundProject.setAmount(amount);
 					foundProject.setCreationDate(creationDate);
 					foundProject.setUpdateDate(updateDate);
-					foundProject.setGpOrganization(new GpOrganization());
+
+					GpOrganizationDAOImpl dao = new GpOrganizationDAOImpl();
+					GpOrganization myOrganization = dao.findById(orgId);
+					foundProject.setGpOrganization(myOrganization);
 
 					GpProjectManagerDAOImpl projectManagerDAOImpl = new GpProjectManagerDAOImpl();
 					foundProject.setGpChefProjet(projectManagerDAOImpl.findById(empId));

@@ -83,6 +83,19 @@ public class GpBillDAOTest {
 		// Then
 		Assert.assertNotNull(bill.getId());
 	}
+	
+	@Test
+	public void testUpdatePhaseWithSuccess() {
+		// Given
+		Integer billId = this.billIdForAllTest;
+		Assert.assertNotNull(billId);
+		// When
+
+		GpBill gpBill= this.billDAO.findById(billId);
+		gpBill.setAmount(3652);
+		this.billDAO.update(gpBill);
+	}
+
 
 	@Test
 	public void testDeleteBillWithSuccess() {

@@ -78,16 +78,26 @@ public class GpPhaseDAOTest {
 	}
 
 	@Test
+	public void testUpdatePhaseWithSuccess() {
+		// Given
+		Integer phaseId = this.phaseIdForAllTest;
+		Assert.assertNotNull(phaseId);
+		// When
+
+		GpPhase gpPhase = this.phaseDAO.findById(phaseId);
+		gpPhase.setDescription("New Description");
+		this.phaseDAO.update(gpPhase);
+	}
+
+	@Test
 	public void testDeletePhaseWithSuccess() {
 		Integer phaseId = this.phaseIdForAllTest;
-
 		// When
-		this.empDAO.deleteById(phaseId);
+		this.phaseDAO.deleteById(phaseId);
 
 		// Then
 		GpPhase phase = this.phaseDAO.findById(phaseId);
 		Assert.assertNull(phase);
-
 	}
 
 	@Before
