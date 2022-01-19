@@ -2,7 +2,6 @@ package af.cmr.indyli.gespro.light.business.dao;
 
 import java.util.List;
 
-import af.cmr.indyli.gespro.light.business.entity.GpAddress;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 
 public interface IGpOrganizationDAO {
@@ -15,5 +14,7 @@ public interface IGpOrganizationDAO {
 	public void deleteById(Integer orgId);
 
 	public GpOrganization findById(Integer orgId);
+
+	public GpOrganization findByName(String orgName);
 
 }

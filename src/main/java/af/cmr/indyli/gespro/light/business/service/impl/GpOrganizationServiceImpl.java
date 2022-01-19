@@ -3,7 +3,6 @@ package af.cmr.indyli.gespro.light.business.service.impl;
 import java.util.List;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpEntityManager;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
@@ -12,11 +11,14 @@ import af.cmr.indyli.gespro.light.business.service.IGpOrganizationService;
 public class GpOrganizationServiceImpl implements IGpOrganizationService<GpOrganization> {
 
 	private IGpOrganizationDAO orgDAO = new GpOrganizationDAOImpl();
-	private GpEntityManager entityManager = new GpEntityManager();
 
 	public GpOrganization create(GpOrganization org) throws GesproBusinessException {
-
+		GpOrganization existingOrg = this.findByName(org.getName());
+		if (existingOrg != null) {
+			throw new GesproBusinessException(String.format("le nome de Organization est deja utilise"));
+		}
 		return this.orgDAO.create(org);
+
 	}
 
 	public void update(GpOrganization org) throws GesproBusinessException {
@@ -44,6 +46,13 @@ public class GpOrganizationServiceImpl implements IGpOrganizationService<GpOrgan
 
 	public GpOrganization findById(Integer orgId) {
 		return this.orgDAO.findById(orgId);
+	}
+
+	@Override
+	public GpOrganization findByName(String orgName) {
+		GpOrganization existingOrg = this.orgDAO.findByName(orgName);
+		return existingOrg;
+
 	}
 
 }

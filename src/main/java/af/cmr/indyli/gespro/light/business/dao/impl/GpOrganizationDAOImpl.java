@@ -104,6 +104,40 @@ public class GpOrganizationDAOImpl implements IGpOrganizationDAO {
 		return org;
 	}
 
+	public GpOrganization findByName(String nameOrg) {
+		String REQ_SQL = "SELECT * FROM GP_ORGANIZATION WHERE NAME = ?";
+		Object[] tabParam = { nameOrg };
+		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
+		GpOrganization org = null;
+		if (resultat != null) {
+			try {
+				while (resultat.next()) {
+					Integer orgId = resultat.getInt("ORG_ID");
+					String orgCode = resultat.getString("ORG_CODE");
+					String name = resultat.getString("NAME");
+					Integer phone = resultat.getInt("PHONE_NUMBER");
+					String contactName = resultat.getString("CONTACT_NAME");
+					String contactEmail = resultat.getString("CONTACT_EMAIL");
+					String addrWeb = resultat.getString("ADR_WEB");
+					org = new GpOrganization();
+
+					org.setId(orgId);
+					org.setOrgCode(orgCode);
+					org.setName(name);
+					org.setPhoneNumber(phone);
+					org.setContactName(contactName);
+					org.setContactEmail(contactEmail);
+					org.setAdrWeb(addrWeb);
+
+				}
+				resultat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return org;
+	}
+
 	@Override
 	public void deleteById(Integer orgId) {
 		String REQ_SQL = "DELETE FROM GP_ORGANIZATION WHERE ORG_ID = ?";

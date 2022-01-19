@@ -55,7 +55,7 @@ public class GpOrganizationServiceTest {
 		String actualMessage = exception.getMessage();
 
 		// Then
-		Assert.assertTrue(actualMessage.contains("Un employee existe deja avec cet email"));
+		Assert.assertTrue(actualMessage.contains("le nome de Organization est deja utilise"));
 	}
 
 	@Test

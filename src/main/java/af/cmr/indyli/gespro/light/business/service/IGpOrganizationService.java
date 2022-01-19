@@ -6,14 +6,16 @@ import af.cmr.indyli.gespro.light.business.entity.IEntity;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
 
 public interface IGpOrganizationService<DTO extends IEntity> {
-	public DTO create(DTO empOrg) throws GesproBusinessException;
+	public DTO create(DTO org) throws GesproBusinessException;
 
-	public void update(DTO empOrg) throws GesproBusinessException;
+	public void update(DTO org) throws GesproBusinessException;
 
 	public List<DTO> findAll();
 
-	public void deleteById(Integer empOrgId) throws GesproBusinessException;
+	public void deleteById(Integer orgId) throws GesproBusinessException;
 
-	public DTO findById(Integer empOrgId);
+	public DTO findById(Integer orgId);
+
+	public DTO findByName(String orgName);
 
 }
