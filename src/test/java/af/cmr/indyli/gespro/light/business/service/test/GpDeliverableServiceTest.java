@@ -1,4 +1,4 @@
-package af.cmr.indyli.gespro.light.business.dao.test;
+package af.cmr.indyli.gespro.light.business.service.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -11,29 +11,28 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import af.cmr.indyli.gespro.light.business.dao.IGpDeliverableDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpPhaseDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpDeliverableDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpPhaseDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpDeliverable;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 import af.cmr.indyli.gespro.light.business.entity.GpPhase;
 import af.cmr.indyli.gespro.light.business.entity.GpProject;
 import af.cmr.indyli.gespro.light.business.entity.GpProjectManager;
+import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
+import af.cmr.indyli.gespro.light.business.service.IGpDeliverableService;
+import af.cmr.indyli.gespro.light.business.service.IGpPhaseService;
+import af.cmr.indyli.gespro.light.business.service.IGpProjectService;
+import af.cmr.indyli.gespro.light.business.service.impl.GpDeliverableServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpOrganizationServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpPhaseServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpProjectManagerServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpProjectServiceImpl;
 
-public class GpDeliverableDAOTest {
+public class GpDeliverableServiceTest {
 
-	private IGpDeliverableDAO deliverableDAO = new GpDeliverableDAOImpl();
-	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
-	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
-	private IGpPhaseDAO phaseDAO = new GpPhaseDAOImpl();
-	private IGpOrganizationDAO organizationDAO = new GpOrganizationDAOImpl();
+	private IGpDeliverableService deliverableService = new GpDeliverableServiceImpl();
+	private IGpProjectService projectService = new GpProjectServiceImpl();
+	private GpProjectManagerServiceImpl empService = new GpProjectManagerServiceImpl();
+	private IGpPhaseService phaseService = new GpPhaseServiceImpl();
+	private GpOrganizationServiceImpl organizationService = new GpOrganizationServiceImpl();
 
 	private Integer deliverableIdForAllTest = null;
 	private Integer createdDelId = null;
@@ -44,10 +43,10 @@ public class GpDeliverableDAOTest {
 	private GpProject pjTest;
 
 	@Test
-	public void testCreateDeliverableWithSuccess() {
+	public void testCreateDeliverableWithSuccess() throws GesproBusinessException {
 
 		if (!Objects.isNull(this.deliverableIdForAllTest)) {
-			this.deliverableDAO.deleteById(this.deliverableIdForAllTest);
+			this.deliverableService.deleteById(this.deliverableIdForAllTest);
 		}
 		// Given
 		GpDeliverable deliverable = new GpDeliverable();
@@ -59,7 +58,7 @@ public class GpDeliverableDAOTest {
 		deliverable.setCreationDate(new Date());
 		deliverable.setGpPhase(this.phaseTest);
 		// When
-		deliverable = deliverableDAO.create(deliverable);
+		deliverable = deliverableService.create(deliverable);
 		// Then
 		Assert.assertNotNull(deliverable.getId());
 		this.createdDelId = deliverable.getId();
@@ -70,7 +69,7 @@ public class GpDeliverableDAOTest {
 		// Given
 
 		// When
-		List<GpDeliverable> deliverables = this.deliverableDAO.findAll();
+		List<GpDeliverable> deliverables = this.deliverableService.findAll();
 		// Then
 		Assert.assertTrue(deliverables.size() > 0);
 	}
@@ -81,21 +80,21 @@ public class GpDeliverableDAOTest {
 		Integer deliverableId = this.deliverableIdForAllTest;
 
 		// When
-		GpDeliverable deliverable = this.deliverableDAO.findById(deliverableId);
+		GpDeliverable deliverable = this.deliverableService.findById(deliverableId);
 		// Then
 		Assert.assertNotNull(deliverable);
 	}
 
 	@Test
-	public void testUpdatePhaseWithSuccess() {
+	public void testUpdatePhaseWithSuccess() throws GesproBusinessException {
 		// Given
 		Integer delId = this.deliverableIdForAllTest;
 		Assert.assertNotNull(delId);
 		// When
 
-		GpDeliverable gpDel = this.deliverableDAO.findById(delId);
+		GpDeliverable gpDel = this.deliverableService.findById(delId);
 		gpDel.setDescription("New Description");
-		this.deliverableDAO.update(gpDel);
+		this.deliverableService.update(gpDel);
 	}
 
 	@Test
@@ -103,15 +102,15 @@ public class GpDeliverableDAOTest {
 		// Given
 		Integer delId = this.deliverableIdForAllTest;
 
-		this.deliverableDAO.deleteById(delId);
+		this.deliverableService.deleteById(delId);
 
-		GpDeliverable deliverable = this.deliverableDAO.findById(delId);
+		GpDeliverable deliverable = this.deliverableService.findById(delId);
 		Assert.assertNull(deliverable);
 
 	}
 
 	@Before
-	public void prepareAllEntityBefore() {
+	public void prepareAllEntityBefore() throws GesproBusinessException {
 
 		// création employé
 		GpProjectManager emp = new GpProjectManager();
@@ -123,7 +122,7 @@ public class GpDeliverableDAOTest {
 		emp.setPassword("mySecondPassword");
 		emp.setEmail("segolene.royal@gouv.fr");
 		emp.setLogin("segos.royal");
-		emp = this.empDAO.create(emp);
+		emp = this.empService.create(emp);
 
 		this.empTest = new GpProjectManager();
 		this.empTest = emp;
@@ -138,7 +137,7 @@ public class GpDeliverableDAOTest {
 		organization.setContactEmail("big@org.com");
 		organization.setContactName("CName");
 		organization.setPhoneNumber(7895);
-		organization = this.organizationDAO.create(organization);
+		organization = this.organizationService.create(organization);
 
 		this.orgTest = new GpOrganization();
 		this.orgTest = organization;
@@ -156,7 +155,7 @@ public class GpDeliverableDAOTest {
 		project.setCreationDate(new Date());
 		project.setGpOrganization(this.orgTest);
 		project.setGpChefProjet(this.empTest);
-		project = this.projectDAO.create(project);
+		project = this.projectService.create(project);
 
 		this.pjTest = new GpProject();
 		this.pjTest = project;
@@ -172,7 +171,7 @@ public class GpDeliverableDAOTest {
 		phase.setAmount(5623.66);
 		phase.setCreationDate(new Date());
 		phase.setGpProject(pjTest);
-		phase = this.phaseDAO.create(phase);
+		phase = this.phaseService.create(phase);
 
 		this.phaseTest = new GpPhase();
 		this.phaseTest = phase;
@@ -187,35 +186,35 @@ public class GpDeliverableDAOTest {
 		deliverable.setLabel("del alpha");
 		deliverable.setGpPhase(phase);
 
-		deliverable = this.deliverableDAO.create(deliverable);
+		deliverable = this.deliverableService.create(deliverable);
 		Assert.assertNotNull(deliverable.getId());
 
 		this.deliverableIdForAllTest = deliverable.getId();
 	}
 
 	@After
-	public void deleteAllEntityAfter() {
+	public void deleteAllEntityAfter() throws GesproBusinessException {
 
-		this.deliverableDAO.deleteById(this.deliverableIdForAllTest);
+		this.deliverableService.deleteById(this.deliverableIdForAllTest);
 
 		if (!Objects.isNull(this.createdDelId)) {
-			this.deliverableDAO.deleteById(this.createdDelId);
+			this.deliverableService.deleteById(this.createdDelId);
 		}
 
 		if (!Objects.isNull(this.empTest)) {
-			this.empDAO.deleteById(this.empTest.getId());
+			this.empService.deleteById(this.empTest.getId());
 		}
 
 		if (!Objects.isNull(this.orgTest)) {
-			this.organizationDAO.deleteById(this.orgTest.getId());
+			this.organizationService.deleteById(this.orgTest.getId());
 		}
 
 		if (!Objects.isNull(this.pjTest)) {
-			this.projectDAO.deleteById(this.pjTest.getId());
+			this.projectService.deleteById(this.pjTest.getId());
 		}
 
 		if (!Objects.isNull(this.phaseTest.getId())) {
-			this.phaseDAO.deleteById(this.phaseTest.getId());
+			this.phaseService.deleteById(this.phaseTest.getId());
 		}
 
 	}

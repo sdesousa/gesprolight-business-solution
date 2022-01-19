@@ -166,7 +166,7 @@ public class GpProjectDAOTest {
 			this.empDAO.deleteById(this.pmTest.getId());
 		}
 		if (!Objects.isNull(this.orgTest)) {
-			this.empDAO.deleteById(this.orgTest.getId());
+			this.organizationDAO.deleteById(this.orgTest.getId());
 		}
 	}
 
