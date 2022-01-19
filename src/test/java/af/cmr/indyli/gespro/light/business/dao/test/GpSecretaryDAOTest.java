@@ -1,8 +1,11 @@
 package af.cmr.indyli.gespro.light.business.dao.test;
 
 import java.util.List;
+import java.util.Objects;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpSecretaryDAO;
@@ -12,6 +15,8 @@ import af.cmr.indyli.gespro.light.business.entity.GpSecretary;
 public class GpSecretaryDAOTest {
 
 	private IGpSecretaryDAO empSecDAO = new GpSecretaryDAOImpl();
+	private Integer empIdForAllTest = null;
+	private Integer createEmprId = null;
 
 	@Test
 	public void testCreateSecretaryWithSuccess() {
@@ -46,7 +51,7 @@ public class GpSecretaryDAOTest {
 	@Test
 	public void testFindByIdWithSuccess() {
 		// Given
-		Integer empId = 29;
+		Integer empId = this.empIdForAllTest;
 
 		// When
 		GpSecretary emp = this.empSecDAO.findById(empId);
@@ -57,8 +62,32 @@ public class GpSecretaryDAOTest {
 	@Test
 	public void testDeleteSecretary() {
 		// Given
+
+		Integer empId = this.empIdForAllTest;
+		// When
+		this.empSecDAO.deleteById(empId);
+		GpSecretary emp = this.empSecDAO.findById(empId);
+		// Then
+		Assert.assertNull(emp);
+	}
+
+	@Test
+	public void testUpdateSecretary() {
+		// Given
+		GpSecretary secretary = this.empSecDAO.findById(this.empIdForAllTest);
+		secretary.setPhoneNumber("0001");
+		// When
+		this.empSecDAO.update(secretary);
+		GpSecretary secretaryUpdate = this.empSecDAO.findById(this.empIdForAllTest);
+		// Then
+
+		Assert.assertTrue(secretaryUpdate.getPhoneNumber().equalsIgnoreCase("0001"));
+	}
+
+	@Before
+	public void prepareAllEntityBefore() {
 		GpSecretary emp = new GpSecretary();
-		Integer empId;
+
 		emp.setFileNumber("2027");
 		emp.setLastname("TCTsec2");
 		emp.setFirstname("CY2sec2");
@@ -67,12 +96,16 @@ public class GpSecretaryDAOTest {
 		emp.setEmail("tctsec2tech2.cy@gmail.com");
 		emp.setLogin("tct2sectech2.cy");
 		emp = empSecDAO.create(emp);
-		empId = emp.getId();
+		this.empIdForAllTest = emp.getId();
 
-		// When
-		this.empSecDAO.deleteById(empId);
-		emp = this.empSecDAO.findById(empId);
-		// Then
-		Assert.assertNull(emp.getId());
+	}
+
+	@After
+	public void deleteAllEntityAfter() {
+		this.empSecDAO.deleteById(empIdForAllTest);
+		if (!Objects.isNull(this.createEmprId)) {
+			this.empSecDAO.deleteById(this.createEmprId);
+
+		}
 	}
 }

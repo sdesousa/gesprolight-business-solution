@@ -11,7 +11,6 @@ import af.cmr.indyli.gespro.light.business.entity.GpAdmin;
 
 public class GpAdminDAOImpl extends GpAbstractEmployeeDAOImpl<GpAdmin> implements IGpAdminDAO {
 
-
 	public GpAdmin create(GpAdmin emp) {
 		try {
 			// On demarre une transaction
@@ -36,7 +35,7 @@ public class GpAdminDAOImpl extends GpAbstractEmployeeDAOImpl<GpAdmin> implement
 	}
 
 	public void update(GpAdmin emp) {
-		String REQ_SQL = "UPDATE FROM GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?     WHERE EMP_ID = ?";
+		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?     WHERE EMP_ID = ?";
 		Object[] tabParam = { emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(), emp.getPassword(),
 				emp.getEmail(), emp.getLogin(), emp.getId() };
 		this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);

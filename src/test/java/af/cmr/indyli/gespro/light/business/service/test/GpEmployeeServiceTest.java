@@ -3,7 +3,6 @@ package af.cmr.indyli.gespro.light.business.service.test;
 import java.util.List;
 import java.util.Objects;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import af.cmr.indyli.gespro.light.business.service.impl.GpEmployeeServiceImpl;
 public class GpEmployeeServiceTest {
 
 	private IGpEmployeeService<GpEmployee> empService = new GpEmployeeServiceImpl();
-	
 
 	private Integer empIdForAllTest = null;
 	private Integer createEmpId = null;
@@ -34,20 +32,18 @@ public class GpEmployeeServiceTest {
 		emp.setEmail("guillaume.peltier@gouv.fr");
 		emp.setLogin("guillaume.peltier");
 
-
 		// When
 		emp = empService.create(emp);
-		//On le sauvegarde pour le supprimer apres
+		// On le sauvegarde pour le supprimer apres
 		this.createEmpId = emp.getId();
 
 		// Then
 		Assert.assertNotNull(emp.getId());
 	}
-	
+
 	@Test
 	public void testCreateEmployeeWithException() throws GesproBusinessException {
 		// Given
-
 
 		// When
 		Exception exception = Assert.assertThrows(GesproBusinessException.class, () -> {
@@ -61,7 +57,7 @@ public class GpEmployeeServiceTest {
 			emp.setEmail("laurent.fabius@gouv.fr");
 			emp.setLogin("laurent.fabius");
 			empService.create(emp);
-	    });
+		});
 		String actualMessage = exception.getMessage();
 
 		// Then
@@ -113,14 +109,14 @@ public class GpEmployeeServiceTest {
 		emp.setPassword("myThirdPassword");
 		emp.setEmail("laurent.fabius@gouv.fr");
 		emp.setLogin("laurent.fabius");
-		emp = empService.create(emp) ;
+		emp = empService.create(emp);
 		this.empIdForAllTest = emp.getId();
 	}
 
-	@After
+	// @After
 	public void deleteAllEntityAfter() {
 		this.empService.deleteById(this.empIdForAllTest);
-		if(!Objects.isNull(this.createEmpId)) {
+		if (!Objects.isNull(this.createEmpId)) {
 			this.empService.deleteById(this.createEmpId);
 		}
 	}
