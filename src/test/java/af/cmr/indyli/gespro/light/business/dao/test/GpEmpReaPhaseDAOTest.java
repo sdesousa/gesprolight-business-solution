@@ -16,7 +16,7 @@ import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpPhaseDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpEmpReaPhaseDAOImp;
+import af.cmr.indyli.gespro.light.business.dao.impl.GpEmpReaPhaseDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpPhaseDAOImpl;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
@@ -27,9 +27,9 @@ import af.cmr.indyli.gespro.light.business.entity.GpPhase;
 import af.cmr.indyli.gespro.light.business.entity.GpProject;
 import af.cmr.indyli.gespro.light.business.entity.GpProjectManager;
 
-public class GpEmpReaPhaseDAOtest {
+public class GpEmpReaPhaseDAOTest {
 
-	private IGpEmpReaPhaseDAO empReaPhaseDAO = new GpEmpReaPhaseDAOImp();
+	private IGpEmpReaPhaseDAO empReaPhaseDAO = new GpEmpReaPhaseDAOImpl();
 	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
 	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
 	private IGpPhaseDAO phaseDAO = new GpPhaseDAOImpl();
@@ -82,7 +82,7 @@ public class GpEmpReaPhaseDAOtest {
 		Integer eRphaseId = this.emReaPhaseIdForAllTest;
 
 		// When
-		this.empDAO.deleteById(eRphaseId);
+		this.empReaPhaseDAO.deleteById(eRphaseId);
 
 		// Then
 		GpPhase eRphase = this.phaseDAO.findById(eRphaseId);

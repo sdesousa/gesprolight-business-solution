@@ -1,4 +1,4 @@
-package af.cmr.indyli.gespro.light.business.dao.test;
+package af.cmr.indyli.gespro.light.business.service.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -11,21 +11,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import af.cmr.indyli.gespro.light.business.dao.IGpOrganizationDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
-import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpOrganizationDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
-import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 import af.cmr.indyli.gespro.light.business.entity.GpProject;
 import af.cmr.indyli.gespro.light.business.entity.GpProjectManager;
+import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
+import af.cmr.indyli.gespro.light.business.service.IGpProjectService;
+import af.cmr.indyli.gespro.light.business.service.impl.GpOrganizationServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpProjectManagerServiceImpl;
+import af.cmr.indyli.gespro.light.business.service.impl.GpProjectServiceImpl;
 
-public class GpProjectDAOTest {
+public class GpProjectServiceTest {
 
-	private IGpProjectManagerDAO empDAO = new GpProjectManagerDAOImpl();
-	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
-	private IGpOrganizationDAO organizationDAO = new GpOrganizationDAOImpl();
+	private GpProjectManagerServiceImpl empService = new GpProjectManagerServiceImpl();
+	private IGpProjectService projectService = new GpProjectServiceImpl();
+	private GpOrganizationServiceImpl organizationService = new GpOrganizationServiceImpl();
 
 	private Integer pjIdForAllTest = null;
 	private Integer pjIdCreateTest = null;
@@ -34,7 +33,7 @@ public class GpProjectDAOTest {
 	private GpProjectManager pmTest;
 
 	@Test
-	public void testCreateProjectWithSuccess() {
+	public void testCreateProjectWithSuccess() throws GesproBusinessException {
 		// Given
 		GpProject project = new GpProject();
 		Assert.assertNull(project.getId());
@@ -52,7 +51,7 @@ public class GpProjectDAOTest {
 		project.setGpOrganization(this.orgTest);
 		project.setGpChefProjet(pmTest);
 
-		project = this.projectDAO.create(project);
+		project = this.projectService.create(project);
 		Assert.assertNotNull(project.getId());
 
 		this.pjIdCreateTest = project.getId();
@@ -64,7 +63,7 @@ public class GpProjectDAOTest {
 		// Given
 
 		// When
-		List<GpProject> projects = this.projectDAO.findAll();
+		List<GpProject> projects = this.projectService.findAll();
 		// Then
 		Assert.assertTrue(projects.size() > 0);
 	}
@@ -75,21 +74,21 @@ public class GpProjectDAOTest {
 		Integer projectId = this.pjIdForAllTest;
 		// When
 		Assert.assertNotNull(projectId);
-		GpProject project = this.projectDAO.findById(projectId);
+		GpProject project = this.projectService.findById(projectId);
 		// Then
 		Assert.assertNotNull(project);
 	}
 
 	@Test
-	public void testUpdateProjectsWithSuccess() {
+	public void testUpdateProjectsWithSuccess() throws GesproBusinessException {
 		// Given
 		Integer projectId = this.pjIdForAllTest;
 		Assert.assertNotNull(projectId);
 		// When
 
-		GpProject gpProject = this.projectDAO.findById(projectId);
+		GpProject gpProject = this.projectService.findById(projectId);
 		gpProject.setAmount(8659);
-		projectDAO.update(gpProject);
+		projectService.update(gpProject);
 		;
 	}
 
@@ -99,23 +98,23 @@ public class GpProjectDAOTest {
 		Integer projectId = this.pjIdForAllTest;
 		Assert.assertNotNull(projectId);
 		// When
-		projectDAO.deleteById(projectId);
+		projectService.deleteById(projectId);
 	}
 
 	@Before
-	public void prepareAllEntityBefore() {
+	public void prepareAllEntityBefore() throws GesproBusinessException {
 
 		// Init GpProjetManager
 		GpProjectManager emp = new GpProjectManager();
 		Assert.assertNull(emp.getId());
-		emp.setFileNumber("1050");
-		emp.setLastname("Segolene");
-		emp.setFirstname("ROYAL");
-		emp.setPhoneNumber("0256897856");
-		emp.setPassword("mySecondPassword");
-		emp.setEmail("segolene.royal@gouv.fr");
-		emp.setLogin("sego.royal");
-		emp = empDAO.create(emp);
+		emp.setFileNumber("852");
+		emp.setLastname("Izi");
+		emp.setFirstname("Ben");
+		emp.setPhoneNumber("6985725");
+		emp.setPassword("manager[pass");
+		emp.setEmail("izi.ben@gouv.fr");
+		emp.setLogin("ben.izi");
+		emp = empService.create(emp);
 
 		this.pmTest = new GpProjectManager();
 		this.pmTest = emp;
@@ -125,13 +124,13 @@ public class GpProjectDAOTest {
 
 		GpOrganization organization = new GpOrganization();
 		Assert.assertNull(organization.getId());
-		organization.setOrgCode("ALPHA");
-		organization.setName("Big Org");
-		organization.setAdrWeb("bigorg.com");
-		organization.setContactEmail("big@org.com");
-		organization.setContactName("CName");
+		organization.setOrgCode("O-Fr");
+		organization.setName("Oracle");
+		organization.setAdrWeb("oracle.com");
+		organization.setContactEmail("oracle@mail.com");
+		organization.setContactName("Oracle");
 		organization.setPhoneNumber(7895);
-		organization = organizationDAO.create(organization);
+		organization = organizationService.create(organization);
 
 		this.orgTest = new GpOrganization();
 		this.orgTest = organization;
@@ -140,33 +139,35 @@ public class GpProjectDAOTest {
 		// création project
 		GpProject project = new GpProject();
 		Assert.assertNull(project.getId());
-		project.setProjectCode("Code-1");
-		project.setName("Project-1");
-		project.setDescription("First Project");
+		project.setProjectCode("J19");
+		project.setName("Jre 19");
+		project.setDescription("Create JRE 19");
 		project.setStartDate(new Date());
 		project.setEndDate(new Date());
-		project.setAmount(5623.66);
+		project.setAmount(98598.66);
 		project.setCreationDate(new Date());
 		project.setGpOrganization(this.orgTest);
 		project.setGpChefProjet(this.pmTest);
 
-		project = this.projectDAO.create(project);
+		project = this.projectService.create(project);
 		Assert.assertNotNull(project.getId());
 
 		this.pjIdForAllTest = project.getId();
 	}
 
 	@After
-	public void deleteAllEntityAfter() {
-		this.projectDAO.deleteById(this.pjIdForAllTest);
+	public void deleteAllEntityAfter() throws GesproBusinessException {
+
+		this.projectService.deleteById(this.pjIdForAllTest);
+
 		if (!Objects.isNull(this.pjIdCreateTest)) {
-			this.projectDAO.deleteById(pjIdCreateTest);
+			this.projectService.deleteById(pjIdCreateTest);
 		}
 		if (!Objects.isNull(this.pmTest)) {
-			this.empDAO.deleteById(this.pmTest.getId());
+			this.empService.deleteById(this.pmTest.getId());
 		}
 		if (!Objects.isNull(this.orgTest)) {
-			this.organizationDAO.deleteById(this.orgTest.getId());
+			this.organizationService.deleteById(this.orgTest.getId());
 		}
 	}
 

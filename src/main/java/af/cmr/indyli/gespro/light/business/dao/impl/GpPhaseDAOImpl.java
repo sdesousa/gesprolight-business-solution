@@ -30,7 +30,8 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 		String REQ_SQL = "UPDATE GP_PHASE SET  PHASE_CODE = ?, DESCRIPTION = ?, START_DATE = ?, END_DATE = ?, AMOUNT = ?, STATUS = ?, IS_ENDED = ?, UPDATE_DATE = ?, PROJECT_ID = ? "
 				+ "WHERE PHASE_ID = ?";
 		Object[] tabParam = { phase.getPhaseCode(), phase.getDescription(), phase.getStartDate(), phase.getEndDate(),
-				phase.getAmount(), phase.getStatus(), phase.getIsEnded(), new Date(), phase.getId() };
+				phase.getAmount(), phase.getStatus(), phase.getIsEnded(), new Date(), phase.getGpProject().getId(),
+				phase.getId() };
 		this.entityManager.updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
