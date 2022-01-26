@@ -33,7 +33,7 @@ public class GpEmployeeDAOTest {
 
 		// When
 		emp = empDAO.create(emp);
-		//On le sauvegarde pour le supprimer apres
+		// On le sauvegarde pour le supprimer apres
 		this.createEmpId = emp.getId();
 		// Then
 		Assert.assertNotNull(emp.getId());
@@ -64,15 +64,28 @@ public class GpEmployeeDAOTest {
 	public void testDelete() {
 		// Given
 		Integer empId = this.empIdForAllTest;
-		
+
 		// When
 		this.empDAO.deleteById(empId);
 		GpEmployee emp = this.empDAO.findById(empId);
-		
+
 		// Then
 		Assert.assertNull(emp);
 	}
-	
+
+	@Test
+	public void testUpdateEmployee() {
+		// Given
+		GpEmployee emp = this.empDAO.findById(this.empIdForAllTest);
+		emp.setPhoneNumber("0001");
+		// When
+		this.empDAO.update(emp);
+		GpEmployee empUpdate = this.empDAO.findById(this.empIdForAllTest);
+		// Then
+
+		Assert.assertTrue(empUpdate.getPhoneNumber().equalsIgnoreCase("0001"));
+	}
+
 	@Before
 	public void prepareAllEntityBefore() {
 		GpEmployee emp = new GpEmployee();
@@ -84,14 +97,14 @@ public class GpEmployeeDAOTest {
 		emp.setPassword("myThirdPassword");
 		emp.setEmail("laurent.fabius@gouv.fr");
 		emp.setLogin("laurent.fabius");
-		emp = empDAO.create(emp) ;
+		emp = empDAO.create(emp);
 		this.empIdForAllTest = emp.getId();
 	}
-	
+
 	@After
 	public void deleteAllEntityAfter() {
 		this.empDAO.deleteById(this.empIdForAllTest);
-		if(!Objects.isNull(this.createEmpId)) {
+		if (!Objects.isNull(this.createEmpId)) {
 			this.empDAO.deleteById(this.createEmpId);
 		}
 	}

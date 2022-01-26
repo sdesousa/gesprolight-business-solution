@@ -98,6 +98,20 @@ public class GpEmployeeServiceTest {
 		Assert.assertNull(emp);
 	}
 
+	@Test
+	public void testUpdateEmployee() throws GesproBusinessException {
+		// Given
+		GpEmployee emp = this.empService.findById(this.empIdForAllTest);
+		emp.setPhoneNumber("0001");
+		// When
+		this.empService.update(emp);
+		GpEmployee empUpdate = this.empService.findById(this.empIdForAllTest);
+		// Then
+
+		Assert.assertTrue(empUpdate.getPhoneNumber().equalsIgnoreCase("0001"));
+
+	}
+
 	@Before
 	public void prepareAllEntityBefore() throws GesproBusinessException {
 		GpEmployee emp = new GpEmployee();

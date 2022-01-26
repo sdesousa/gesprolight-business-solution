@@ -8,19 +8,26 @@ import af.cmr.indyli.gespro.light.business.entity.GpEmployee;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
 import af.cmr.indyli.gespro.light.business.service.IGpEmployeeService;
 
-public class GpEmployeeServiceImpl implements IGpEmployeeService<GpEmployee>{
+public class GpEmployeeServiceImpl implements IGpEmployeeService<GpEmployee> {
 
 	private IGpEmployeeDAO<GpEmployee> empDAO = new GpEmployeeDAOImpl();
-	
-	public GpEmployee create(GpEmployee emp) throws GesproBusinessException{
+
+	public GpEmployee create(GpEmployee emp) throws GesproBusinessException {
 		if (this.empDAO.ifEmpExistByFileNumberOrEmail(emp.getFileNumber(), emp.getEmail(), emp.getLogin())) {
-			throw new GesproBusinessException(String.format("Un employee existe deja avec cet email[%s] ou ce login[%s] ou ce matricule[%s]",emp.getEmail(),emp.getLogin(),emp.getFileNumber()));
+			throw new GesproBusinessException(
+					String.format("Un employee existe deja avec cet email[%s] ou ce login[%s] ou ce matricule[%s]",
+							emp.getEmail(), emp.getLogin(), emp.getFileNumber()));
 		}
 		return this.empDAO.create(emp);
 	}
 
-	public void update(GpEmployee emp) throws GesproBusinessException{
-		
+	public void update(GpEmployee emp) throws GesproBusinessException {
+		GpEmployee existEmpl = this.empDAO.findById(emp.getId());
+		if (existEmpl.getId() == null) {
+			throw new GesproBusinessException(
+					String.format("le Secretary que vous voulez mettre en jour n'existe pas "));
+		}
+		this.empDAO.update(emp);
 	}
 
 	public List<GpEmployee> findAll() {
