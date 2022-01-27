@@ -16,6 +16,6 @@ public interface IGpPhaseService {
 	public void deleteById(Integer phaseId);
 
 	public GpPhase findById(Integer phaseId);
-	
-	public GpPhase findByProjectId(Integer projectId);
+
+	public List<GpPhase> findByProjectId(Integer projectId);
 }

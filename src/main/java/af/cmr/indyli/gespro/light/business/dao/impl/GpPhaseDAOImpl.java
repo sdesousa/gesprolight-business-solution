@@ -132,13 +132,13 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 		}
 		return foundPhase;
 	}
-	
+
 	@Override
-	public GpPhase findByProjectId(Integer projectId) {
+	public List<GpPhase> findByProjectId(Integer projectId) {
 		String REQ_SQL = "SELECT * FROM GP_PHASE where PROJECT_ID = ?";
-		Object[] tabParam = {  projectId };
+		Object[] tabParam = { projectId };
 		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
-		GpPhase foundPhase = null;
+		List<GpPhase> phaseList = new ArrayList<GpPhase>();
 		if (resultat != null) {
 			try {
 				while (resultat.next()) {
@@ -152,11 +152,12 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					Date updateDate = resultat.getDate("UPDATE_DATE");
 					Integer phaseId = resultat.getInt("PHASE_ID");
-					
+
 					GpProject project = new GpProject();
 					GpProjectDAOImpl projectDAOImpl = new GpProjectDAOImpl();
-					
+
 					project = projectDAOImpl.findById(projectId);
+					GpPhase foundPhase = new GpPhase();
 					foundPhase = new GpPhase();
 					foundPhase.setId(phaseId);
 					foundPhase.setPhaseCode(phaseCode);
@@ -169,12 +170,14 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 					foundPhase.setUpdateDate(updateDate);
 					foundPhase.setIsEnded(isEnded);
 					foundPhase.setGpProject(project);
+
+					phaseList.add(foundPhase);
 				}
 				resultat.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return foundPhase;
+		return phaseList;
 	}
 }

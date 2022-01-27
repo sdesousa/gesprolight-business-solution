@@ -15,5 +15,5 @@ public interface IGpPhaseDAO {
 
 	public GpPhase findById(Integer phaseId);
 	
-	public GpPhase findByProjectId(Integer projectId);
+	public List<GpPhase> findByProjectId(Integer projectId);
 }
