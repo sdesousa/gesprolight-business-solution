@@ -132,4 +132,49 @@ public class GpPhaseDAOImpl implements IGpPhaseDAO {
 		}
 		return foundPhase;
 	}
+	
+	@Override
+	public GpPhase findByProjectId(Integer projectId) {
+		String REQ_SQL = "SELECT * FROM GP_PHASE where PROJECT_ID = ?";
+		Object[] tabParam = {  projectId };
+		ResultSet resultat = this.entityManager.selectAvecParamGenerique(REQ_SQL, tabParam);
+		GpPhase foundPhase = null;
+		if (resultat != null) {
+			try {
+				while (resultat.next()) {
+					String phaseCode = resultat.getString("PHASE_CODE");
+					String description = resultat.getString("DESCRIPTION");
+					Date startDate = resultat.getDate("START_DATE");
+					Date endDate = resultat.getDate("END_DATE");
+					Double amount = resultat.getDouble("AMOUNT");
+					Byte status = resultat.getByte("STATUS");
+					Byte isEnded = resultat.getByte("IS_ENDED");
+					Date creationDate = resultat.getDate("CREATION_DATE");
+					Date updateDate = resultat.getDate("UPDATE_DATE");
+					Integer phaseId = resultat.getInt("PHASE_ID");
+					
+					GpProject project = new GpProject();
+					GpProjectDAOImpl projectDAOImpl = new GpProjectDAOImpl();
+					
+					project = projectDAOImpl.findById(projectId);
+					foundPhase = new GpPhase();
+					foundPhase.setId(phaseId);
+					foundPhase.setPhaseCode(phaseCode);
+					foundPhase.setDescription(description);
+					foundPhase.setStartDate(startDate);
+					foundPhase.setEndDate(endDate);
+					foundPhase.setAmount(amount);
+					foundPhase.setStatus(status);
+					foundPhase.setCreationDate(creationDate);
+					foundPhase.setUpdateDate(updateDate);
+					foundPhase.setIsEnded(isEnded);
+					foundPhase.setGpProject(project);
+				}
+				resultat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return foundPhase;
+	}
 }

@@ -36,4 +36,9 @@ public class GpPhaseServiceImpl implements IGpPhaseService {
 		return this.phaseDAO.findById(phaseId);
 	}
 
+	@Override
+	public GpPhase findByProjectId(Integer projecId) {
+		return this.phaseDAO.findByProjectId(projecId);
+	}
+
 }
