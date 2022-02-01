@@ -14,6 +14,22 @@ public class GpProjectServiceImpl implements IGpProjectService {
 
 	@Override
 	public GpProject create(GpProject project) throws GesproBusinessException {
+
+		if (project.getStartDate() == null) {
+			throw new GesproBusinessException("La date de démarrage est requise");
+		}
+
+		if (project.getEndDate() != null) {
+			if (project.getEndDate().before(project.getStartDate())) {
+				throw new GesproBusinessException(String
+						.format("La date de fin doit etre postérieur la date de début (%s)", project.getStartDate()));
+			}
+		}
+
+		if (project.getGpOrganization() == null) {
+			throw new GesproBusinessException("On ne peut créer un projet sans fournir l'organisme associé");
+		}
+
 		return this.projectDAO.create(project);
 	}
 

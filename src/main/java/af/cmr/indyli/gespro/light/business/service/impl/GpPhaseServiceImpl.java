@@ -1,5 +1,8 @@
 package af.cmr.indyli.gespro.light.business.service.impl;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.List;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpPhaseDAO;
@@ -14,6 +17,26 @@ public class GpPhaseServiceImpl implements IGpPhaseService {
 
 	@Override
 	public GpPhase create(GpPhase phase) throws GesproBusinessException {
+
+		if (phase.getStartDate() != null && phase.getEndDate() != null) {
+
+			LocalDate startDate = phase.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate endDate = phase.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Period p = Period.between(startDate, endDate);
+
+			if (p.getMonths() > 6 && phase.getAmount() < 150000) {
+
+				throw new GesproBusinessException(
+						"Le montant de facturation d’une phase dont la durée dépasse 6 mois ne peut etre inférieure à 150.000 euros");
+			}
+		}
+
+		if (phase.getStartDate() != null) {
+			if (phase.getStartDate().before(phase.getGpProject().getStartDate())) {
+				throw new GesproBusinessException("Une phase ne peut pas démarrer avant le projet qui lui est associé");
+			}
+		}
+
 		return this.phaseDAO.create(phase);
 	}
 
