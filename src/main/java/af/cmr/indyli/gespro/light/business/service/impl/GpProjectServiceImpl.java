@@ -26,6 +26,22 @@ public class GpProjectServiceImpl implements IGpProjectService {
 		} else if (this.ifProjectExistByCode(project.getProjectCode())) {
 			throw new GesproBusinessException(String.format("Le code de projet est obligatoire et unique"));
 		}
+
+		if (project.getStartDate() == null) {
+			throw new GesproBusinessException("La date de d�marrage est requise");
+		}
+
+		if (project.getEndDate() != null) {
+			if (project.getEndDate().before(project.getStartDate())) {
+				throw new GesproBusinessException(String
+						.format("La date de fin doit etre post�rieur la date de d�but (%s)", project.getStartDate()));
+			}
+		}
+
+		if (project.getGpOrganization() == null) {
+			throw new GesproBusinessException("On ne peut cr�er un projet sans fournir l'organisme associ�");
+		}
+
 		return this.projectDAO.create(project);
 	}
 
