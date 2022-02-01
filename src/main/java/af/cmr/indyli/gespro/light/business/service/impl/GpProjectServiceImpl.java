@@ -3,6 +3,7 @@ package af.cmr.indyli.gespro.light.business.service.impl;
 import java.util.List;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectDAO;
+import af.cmr.indyli.gespro.light.business.dao.impl.GpEntityManager;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpProject;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
@@ -11,9 +12,20 @@ import af.cmr.indyli.gespro.light.business.service.IGpProjectService;
 public class GpProjectServiceImpl implements IGpProjectService {
 
 	private IGpProjectDAO projectDAO = new GpProjectDAOImpl();
+	private GpEntityManager entityManager = new GpEntityManager();
 
 	@Override
 	public GpProject create(GpProject project) throws GesproBusinessException {
+		if (project.getGpChefProjet().getId() == null) {
+
+			throw new GesproBusinessException(String.format("Le chef de projet est obligatoire "));
+		}
+
+		if (project.getProjectCode() == "") {
+			throw new GesproBusinessException(String.format("Le code de projet est obligatoire "));
+		} else if (this.ifProjectExistByCode(project.getProjectCode())) {
+			throw new GesproBusinessException(String.format("Le code de projet est obligatoire et unique"));
+		}
 		return this.projectDAO.create(project);
 	}
 
@@ -37,4 +49,9 @@ public class GpProjectServiceImpl implements IGpProjectService {
 		return this.projectDAO.findById(projectId);
 	}
 
+	@Override
+	public boolean ifProjectExistByCode(String code) {
+		Integer idProject = this.entityManager.findIdByAnyColumn("GP_PROJECT", "PROJECT_CODE", code, "ID");
+		return idProject != null;
+	}
 }

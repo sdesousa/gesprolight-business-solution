@@ -26,7 +26,6 @@ public class GpOrganization implements IEntity {
 	public GpOrganization() {
 	}
 
-
 	public Integer getId() {
 		return id;
 	}
@@ -125,6 +124,13 @@ public class GpOrganization implements IEntity {
 		gpProject.setGpOrganization(null);
 
 		return gpProject;
+	}
+
+	@Override
+	public String toString() {
+		return "GpOrganization [id=" + id + ", adrWeb=" + adrWeb + ", contactEmail=" + contactEmail + ", contactName="
+				+ contactName + ", name=" + name + ", orgCode=" + orgCode + ", phoneNumber=" + phoneNumber
+				+ ", gpAddresses=" + gpAddresses + ", gpProjects=" + gpProjects + "]";
 	}
 
 }

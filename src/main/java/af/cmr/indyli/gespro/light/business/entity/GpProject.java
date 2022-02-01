@@ -33,7 +33,6 @@ public class GpProject implements IEntity {
 	public GpProject() {
 	}
 
-
 	public Integer getId() {
 		return id;
 	}
@@ -142,6 +141,14 @@ public class GpProject implements IEntity {
 
 	public void setGpOrganization(GpOrganization gpOrganization) {
 		this.gpOrganization = gpOrganization;
+	}
+
+	@Override
+	public String toString() {
+		return "GpProject [id=" + id + ", amount=" + amount + ", creationDate=" + creationDate + ", description="
+				+ description + ", endDate=" + endDate + ", name=" + name + ", projectCode=" + projectCode
+				+ ", startDate=" + startDate + ", updateDate=" + updateDate + ", gpPhases=" + gpPhases
+				+ ", gpChefProjet=" + gpChefProjet + ", gpOrganization=" + gpOrganization + "]";
 	}
 
 }

@@ -1,6 +1,8 @@
- package af.cmr.indyli.gespro.light.business.service.impl;
+package af.cmr.indyli.gespro.light.business.service.impl;
 
 import java.util.List;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 import af.cmr.indyli.gespro.light.business.dao.IGpProjectManagerDAO;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpProjectManagerDAOImpl;
@@ -14,9 +16,18 @@ public class GpProjectManagerServiceImpl implements IGpProjectManagerService<GpP
 
 	public GpProjectManager create(GpProjectManager empPM) throws GesproBusinessException {
 		if (this.empPMDAO.ifEmpExistByFileNumberOrEmail(empPM.getFileNumber(), empPM.getEmail(), empPM.getLogin())) {
+			throw new GesproBusinessException(String.format(
+					"Un projectManager existe deja avec cet email[%s] ou ce login[%s] ou ce matricule[%s]",
+					empPM.getEmail(), empPM.getLogin(), empPM.getFileNumber()));
+		}
+		if (!EmailValidator.getInstance().isValid(empPM.getEmail())) {
 			throw new GesproBusinessException(
-					String.format("Un projectManager existe deja avec cet email[%s] ou ce login[%s] ou ce matricule[%s]",
-							empPM.getEmail(), empPM.getLogin(), empPM.getFileNumber()));
+					String.format("l'email[%s] n'est pas valide, veuillez entrer le bon email ", empPM.getEmail()));
+		}
+		if (empPM.getEmail() == "" || empPM.getLogin() == "" || empPM.getFirstname() == ""
+				|| empPM.getFileNumber() == "") {
+			throw new GesproBusinessException(
+					String.format("l'email, le login, le nom, le matricule sont obligatoires "));
 		}
 		return this.empPMDAO.create(empPM);
 	}
@@ -39,7 +50,8 @@ public class GpProjectManagerServiceImpl implements IGpProjectManagerService<GpP
 	public void deleteById(Integer empPMId) throws GesproBusinessException {
 		GpProjectManager existEmpl = this.empPMDAO.findById(empPMId);
 		if (existEmpl == null) {
-			throw new GesproBusinessException(String.format("le ProjectManager que vous voulez supprimer n'existe pas "));
+			throw new GesproBusinessException(
+					String.format("le ProjectManager que vous voulez supprimer n'existe pas "));
 		}
 		this.empPMDAO.deleteById(empPMId);
 	}

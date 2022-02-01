@@ -16,4 +16,6 @@ public interface IGpProjectService {
 	public void deleteById(Integer projectId);
 
 	public GpProject findById(Integer projectId);
+
+	boolean ifProjectExistByCode(String code);
 }
