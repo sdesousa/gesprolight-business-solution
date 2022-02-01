@@ -22,7 +22,7 @@ import af.cmr.indyli.gespro.light.business.service.impl.GpOrganizationServiceImp
 public class GpAddressServiceTest {
 	private IGpAddressService<GpAddress> addressService = new GpAddressServiceImpl();
 	private IGpEmployeeService<GpEmployee> empService = new GpEmployeeServiceImpl();
-	private IGpOrganizationService<GpOrganization> organizationService = new GpOrganizationServiceImpl();
+	private IGpOrganizationService organizationService = new GpOrganizationServiceImpl();
 
 	private Integer orgIdForAllTest = null;
 	private Integer addrIdForAllTest = null;

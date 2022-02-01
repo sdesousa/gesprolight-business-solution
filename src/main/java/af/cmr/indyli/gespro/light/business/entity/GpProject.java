@@ -31,6 +31,8 @@ public class GpProject implements IEntity {
 	private GpOrganization gpOrganization;
 
 	public GpProject() {
+		this.gpOrganization = new GpOrganization();
+		this.gpChefProjet = new GpProjectManager();
 	}
 
 	public Integer getId() {
