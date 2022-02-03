@@ -88,9 +88,9 @@ public class GpProjectDAOTest {
 		// When
 
 		GpProject gpProject = this.projectDAO.findById(projectId);
-		gpProject.setAmount(8659);
+		gpProject.setAmount(11);
 		projectDAO.update(gpProject);
-		;
+		Assert.assertTrue(gpProject.getAmount() == 11);
 	}
 
 	@Test

@@ -33,8 +33,8 @@ public class GpProjectServiceImpl implements IGpProjectService {
 
 		if (project.getEndDate() != null) {
 			if (project.getEndDate().before(project.getStartDate())) {
-				throw new GesproBusinessException(String
-						.format("La date de fin doit etre post�rieur la date de d�but (%s)", project.getStartDate()));
+				throw new GesproBusinessException(String.format(
+						"La date de fin doit etre post�rieur la date de d�but (%s)", project.getStartDate()));
 			}
 		}
 
@@ -47,7 +47,7 @@ public class GpProjectServiceImpl implements IGpProjectService {
 
 	@Override
 	public void update(GpProject project) throws GesproBusinessException {
-
+		this.projectDAO.update(project);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class GpProjectServiceImpl implements IGpProjectService {
 
 	@Override
 	public boolean ifProjectExistByCode(String code) {
-		Integer idProject = this.entityManager.findIdByAnyColumn("GP_PROJECT", "PROJECT_CODE", code, "ID");
+		Integer idProject = this.entityManager.findIdByAnyColumn("GP_PROJECT", "PROJECT_CODE", code, "PROJECT_ID");
 		return idProject != null;
 	}
 }

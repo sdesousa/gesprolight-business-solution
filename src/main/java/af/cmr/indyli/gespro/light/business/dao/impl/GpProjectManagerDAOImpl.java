@@ -46,7 +46,7 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 
 	@Override
 	public List<GpProjectManager> findAll() {
-		String REQ_SQL = "SELECT * FROM GP_EMPLOYEE";
+		String REQ_SQL = "SELECT * FROM gp_employee e, gp_project_manager pm WHERE e.EMP_ID = pm.EMP_ID";
 		ResultSet resultat = this.getEntityManager().exec(REQ_SQL);
 		List<GpProjectManager> empList = new ArrayList<GpProjectManager>();
 		if (resultat != null) {
