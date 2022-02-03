@@ -8,7 +8,7 @@ import af.cmr.indyli.gespro.light.business.entity.GpOrganization;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
 import af.cmr.indyli.gespro.light.business.service.IGpOrganizationService;
 
-public class GpOrganizationServiceImpl implements IGpOrganizationService<GpOrganization> {
+public class GpOrganizationServiceImpl implements IGpOrganizationService {
 
 	private IGpOrganizationDAO orgDAO = new GpOrganizationDAOImpl();
 

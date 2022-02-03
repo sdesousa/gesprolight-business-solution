@@ -15,7 +15,7 @@ import af.cmr.indyli.gespro.light.business.service.impl.GpOrganizationServiceImp
 
 public class GpOrganizationServiceTest {
 
-	private IGpOrganizationService<GpOrganization> orgService = new GpOrganizationServiceImpl();
+	private IGpOrganizationService orgService = new GpOrganizationServiceImpl();
 
 	private Integer orgIdForAllTest = null;
 	private Integer createOrgId = null;
