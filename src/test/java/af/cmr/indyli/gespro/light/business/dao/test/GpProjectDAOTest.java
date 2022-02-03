@@ -2,6 +2,7 @@ package af.cmr.indyli.gespro.light.business.dao.test;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -36,13 +37,19 @@ public class GpProjectDAOTest {
 	@Test
 	public void testCreateProjectWithSuccess() {
 		// Given
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, -5);
+		
+		Date d = c.getTime();
+		System.out.println(d + "   END");
+		
 		GpProject project = new GpProject();
 		Assert.assertNull(project.getId());
 		project.setProjectCode("Code-1");
 		project.setName("Project-1");
 		project.setDescription("First Project");
 		project.setStartDate(new Date());
-		project.setEndDate(new Date());
+		project.setEndDate(d);
 		project.setAmount(5623.66);
 		project.setCreationDate(new Date());
 

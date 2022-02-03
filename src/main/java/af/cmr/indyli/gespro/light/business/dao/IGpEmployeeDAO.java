@@ -8,7 +8,7 @@ public interface IGpEmployeeDAO<Entity extends IEntity> {
 	public Entity create(Entity emp);
 	public void update(Entity emp);
 	public List<Entity> findAll();
-	public void deleteById(Integer empId);
+	public void deleteById(Integer empId); 
 	public Entity findById(Integer empId);
 	public boolean ifEmpExistByFileNumberOrEmail(String fileNumber,String email,String login);
 }

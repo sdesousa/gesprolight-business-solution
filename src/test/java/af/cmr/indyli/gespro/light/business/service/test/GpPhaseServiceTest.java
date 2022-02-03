@@ -2,6 +2,7 @@ package af.cmr.indyli.gespro.light.business.service.test;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -42,9 +43,12 @@ public class GpPhaseServiceTest {
 		GpPhase phase = new GpPhase();
 		Assert.assertNull(phase.getId());
 
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, -40);
+		Date d = c.getTime();
 		phase.setPhaseCode("ServiceTest");
 		phase.setDescription("Deuxième phase du projet");
-		phase.setStartDate(new Date());
+		phase.setStartDate(d);
 		phase.setEndDate(new Date());
 		phase.setAmount(78553.66);
 		phase.setCreationDate(new Date());
@@ -61,7 +65,7 @@ public class GpPhaseServiceTest {
 		// Given
 
 		// When
-		List<GpPhase> phases = this.phaseService.findAll();
+		List<GpPhase> phases = this.phaseService.findByProjectId(this.pjTest.getId());
 		// Then
 		Assert.assertTrue(phases.size() > 0);
 	}

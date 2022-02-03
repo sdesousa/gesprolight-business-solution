@@ -143,7 +143,7 @@ public class GpProjectServiceTest {
 		project.setName("Jre 19");
 		project.setDescription("Create JRE 19");
 		project.setStartDate(new Date());
-		project.setEndDate(new Date());
+//		project.setEndDate(new Date());
 		project.setAmount(98598.66);
 		project.setCreationDate(new Date());
 		project.setGpOrganization(this.orgTest);

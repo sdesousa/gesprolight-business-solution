@@ -10,7 +10,7 @@ public abstract class GpAbstractEmployeeDAOImpl<Entity extends IEntity> implemen
 
 	private GpEntityManager entityManager = new GpEntityManager();
 	@Override
-	public Entity create(Entity emp) {
+	public Entity create(Entity emp) { 
 		return null;
 	}
 

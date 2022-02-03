@@ -55,7 +55,7 @@ public class GpProjectManagerServiceTest {
 			empPM.setFirstname("FABIUS");
 			empPM.setPhoneNumber("0125698745");
 			empPM.setPassword("myThirdPassword");
-			empPM.setEmail("laurent.fabius@gouv.fr");
+			empPM.setEmail("laurent.fabius@gouv.f");
 			empPM.setLogin("laurent.fabius");
 			empPMService.create(empPM);
 		});

@@ -3,6 +3,7 @@ package af.cmr.indyli.gespro.light.business.service.test;
 import java.util.List;
 import java.util.Objects;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +128,7 @@ public class GpEmployeeServiceTest {
 		this.empIdForAllTest = emp.getId();
 	}
 
-	// @After
+	@After
 	public void deleteAllEntityAfter() {
 		this.empService.deleteById(this.empIdForAllTest);
 		if (!Objects.isNull(this.createEmpId)) {
