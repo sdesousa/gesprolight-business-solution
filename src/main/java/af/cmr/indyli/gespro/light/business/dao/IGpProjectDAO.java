@@ -10,4 +10,5 @@ public interface IGpProjectDAO {
 	public List<GpProject> findAll();
 	public void deleteById(Integer projectId);
 	public GpProject findById(Integer projectId);
+	boolean ifProjectByCode(String code);
 }

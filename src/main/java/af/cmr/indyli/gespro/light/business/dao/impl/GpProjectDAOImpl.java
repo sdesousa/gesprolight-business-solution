@@ -135,5 +135,11 @@ public class GpProjectDAOImpl implements IGpProjectDAO {
 		}
 		return foundProject;
 	}
+	
+	@Override
+	public boolean ifProjectByCode(String code) {
+		Integer id = this.entityManager.findIdByAnyColumn("GP_PROJECT", "PROJECT_CODE", code, "PROJECT_ID");
+		return id != null;
+	}
 
 }
