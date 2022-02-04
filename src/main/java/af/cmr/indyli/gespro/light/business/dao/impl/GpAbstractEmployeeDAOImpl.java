@@ -46,7 +46,7 @@ public abstract class GpAbstractEmployeeDAOImpl<Entity extends IEntity> implemen
 	public boolean ifEmpExistByFileNumberOrEmail(String fileNumber, String email,String login) {
 		Integer empIdForEmail = this.entityManager.findIdByAnyColumn("GP_EMPLOYEE", "EMAIL", email, "EMP_ID");
 		Integer empIdForFileNumber = this.entityManager.findIdByAnyColumn("GP_EMPLOYEE", "FILE_NUMBER", fileNumber, "EMP_ID");
-		Integer empIdForLogin = this.entityManager.findIdByAnyColumn("GP_EMPLOYEE", "LOGIN", fileNumber, "EMP_ID");
+		Integer empIdForLogin = this.entityManager.findIdByAnyColumn("GP_EMPLOYEE", "LOGIN", login, "EMP_ID");
 		return empIdForEmail != null || empIdForFileNumber != null || empIdForLogin != null;
 	}
 
