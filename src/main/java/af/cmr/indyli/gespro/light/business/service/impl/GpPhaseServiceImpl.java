@@ -8,23 +8,29 @@ import java.util.List;
 import af.cmr.indyli.gespro.light.business.dao.IGpPhaseDAO;
 import af.cmr.indyli.gespro.light.business.dao.impl.GpPhaseDAOImpl;
 import af.cmr.indyli.gespro.light.business.entity.GpPhase;
+import af.cmr.indyli.gespro.light.business.entity.GpProject;
 import af.cmr.indyli.gespro.light.business.exception.GesproBusinessException;
 import af.cmr.indyli.gespro.light.business.service.IGpPhaseService;
+import af.cmr.indyli.gespro.light.business.service.IGpProjectService;
+import af.cmr.indyli.gespro.light.business.utils.GesProConstantes;
 
 public class GpPhaseServiceImpl implements IGpPhaseService {
 
 	private IGpPhaseDAO phaseDAO = new GpPhaseDAOImpl();
+	private IGpProjectService projectService = new GpProjectServiceImpl();
 
 	@Override
 	public GpPhase create(GpPhase phase) throws GesproBusinessException {
-
+		
+		GpProject project = this.projectService.findById(phase.getGpProject().getId());
+		phase.setGpProject(project);
 		if (phase.getStartDate() != null && phase.getEndDate() != null) {
 
 			LocalDate startDate = phase.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate endDate = phase.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			Period p = Period.between(startDate, endDate);
 
-			if (p.getMonths() > 6 && phase.getAmount() < 150000) {
+			if (p.getMonths() > GesProConstantes.NB_PHASE_MONTH && phase.getAmount() < GesProConstantes.MIN_AMOUNT) {
 
 				throw new GesproBusinessException(
 						"Le montant de facturation d’une phase dont la durée dépasse 6 mois ne peut etre inférieure à 150.000 euros");

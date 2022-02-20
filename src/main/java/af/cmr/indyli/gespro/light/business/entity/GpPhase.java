@@ -34,6 +34,7 @@ public class GpPhase implements IEntity {
 	private GpProject gpProject;
 
 	public GpPhase() {
+		this.gpProject = new GpProject();
 	}
 
 
