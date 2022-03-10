@@ -38,9 +38,9 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 
 	@Override
 	public void update(GpProjectManager emp) {
-		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?, UPDATE_DATE=?     WHERE EMP_ID = ?";
+		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?,FILE_NUMBER=?, UPDATE_DATE=?     WHERE EMP_ID = ?";
 		Object[] tabParam = { emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(), emp.getPassword(),
-				emp.getEmail(), emp.getLogin(), emp.getUpdateDate(), emp.getId() };
+				emp.getEmail(), emp.getLogin(),emp.getFileNumber(), emp.getUpdateDate(), emp.getId() };
 		this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
