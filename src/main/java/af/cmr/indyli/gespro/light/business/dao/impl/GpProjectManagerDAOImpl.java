@@ -19,9 +19,9 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 			this.getEntityManager().getDbConnect().setAutoCommit(false);
 			// On commence par insérer dans la table mère avant d'inserer dans la table
 			// fille
-			String REQ_SQL = "INSERT INTO GP_EMPLOYEE ( FILE_NUMBER,LASTNAME,FIRSTNAME,PHONE_NUMBER,PASSWORD,CREATION_DATE,EMAIL,LOGIN) VALUES (?,?,?,?,?,?,?,?)";
+			String REQ_SQL = "INSERT INTO GP_EMPLOYEE ( FILE_NUMBER,LASTNAME,FIRSTNAME,PHONE_NUMBER,PASSWORD,CREATION_DATE,EMAIL,LOGIN,UPDATE_DATE) VALUES (?,?,?,?,?,?,?,?,?)";
 			Object[] tabParam = { emp.getFileNumber(), emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(),
-					emp.getPassword(), new Date(), emp.getEmail(), emp.getLogin() };
+					emp.getPassword(), emp.getCreationDate(), emp.getEmail(), emp.getLogin(), new Date() };
 			this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);
 			Integer empId = getEntityManager().findIdByAnyColumn("GP_EMPLOYEE", "EMAIL", emp.getEmail(), "EMP_ID");
 			// On insere maintenant dans la table GP_PROJECT_MANAGER
@@ -38,9 +38,9 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 
 	@Override
 	public void update(GpProjectManager emp) {
-		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?     WHERE EMP_ID = ?";
+		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?, UPDATE_DATE=?     WHERE EMP_ID = ?";
 		Object[] tabParam = { emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(), emp.getPassword(),
-				emp.getEmail(), emp.getLogin(), emp.getId() };
+				emp.getEmail(), emp.getLogin(), emp.getUpdateDate(), emp.getId() };
 		this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
@@ -61,6 +61,7 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					String email = resultat.getString("EMAIL");
 					String login = resultat.getString("LOGIN");
+					Date updateDate = resultat.getDate("UPDATE_DATE");
 					GpProjectManager foundEmp = new GpProjectManager();
 					foundEmp.setId(empId);
 					foundEmp.setFileNumber(fileNumber);
@@ -71,6 +72,7 @@ public class GpProjectManagerDAOImpl extends GpAbstractEmployeeDAOImpl<GpProject
 					foundEmp.setPhoneNumber(phoneNumber);
 					foundEmp.setEmail(email);
 					foundEmp.setLogin(login);
+					foundEmp.setUpdateDate(updateDate);
 					empList.add(foundEmp);
 				}
 				resultat.close();

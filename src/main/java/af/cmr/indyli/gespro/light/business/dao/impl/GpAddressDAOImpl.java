@@ -58,7 +58,9 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 					Integer zipCode = resultat.getInt("ZIP_CODE");
 					String country = resultat.getString("COUNTRY");
 					Byte isMain = resultat.getByte("IS_MAIN");
-
+					Integer orgId = resultat.getInt("ORG_ID");
+					Integer empId = resultat.getInt("EMP_ID");
+					
 					GpAddress foundEmp = new GpAddress();
 					foundEmp.setId(addrId);
 					foundEmp.setStreetNumber(streetNumber);
@@ -66,6 +68,8 @@ public class GpAddressDAOImpl implements IGpAddressDAO {
 					foundEmp.setZipCode(zipCode);
 					foundEmp.setCountry(country);
 					foundEmp.setIsMain(isMain);
+					foundEmp.setGpOrganization(organizationDAO.findById(orgId));
+					foundEmp.setGpEmployee(this.empDAO.findById(empId));
 					addrList.add(foundEmp);
 				}
 				resultat.close();

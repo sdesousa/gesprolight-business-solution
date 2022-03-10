@@ -13,9 +13,9 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 
 	@Override
 	public GpEmployee create(GpEmployee emp) {
-		String REQ_SQL = "INSERT INTO GP_EMPLOYEE ( FILE_NUMBER,LASTNAME,FIRSTNAME,PHONE_NUMBER,PASSWORD,CREATION_DATE,EMAIL,LOGIN) VALUES (?,?,?,?,?,?,?,?)";
+		String REQ_SQL = "INSERT INTO GP_EMPLOYEE ( FILE_NUMBER,LASTNAME,FIRSTNAME,PHONE_NUMBER,PASSWORD,CREATION_DATE,EMAIL,LOGIN, UPDATE_DATE) VALUES (?,?,?,?,?,?,?,?)";
 		Object[] tabParam = { emp.getFileNumber(), emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(),
-				emp.getPassword(), new Date(), emp.getEmail(), emp.getLogin() };
+				emp.getPassword(), new Date(), emp.getEmail(), emp.getLogin(),  emp.getUpdateDate() };
 		this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);
 		Integer empId = getEntityManager().findIdByAnyColumn("GP_EMPLOYEE", "EMAIL", emp.getEmail(), "EMP_ID");
 		emp.setId(empId);
@@ -24,9 +24,9 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 
 	@Override
 	public void update(GpEmployee emp) {
-		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?     WHERE EMP_ID = ?";
+		String REQ_SQL = "UPDATE  GP_EMPLOYEE SET LASTNAME=? , FIRSTNAME=? , PHONE_NUMBER=? ,PASSWORD = ? ,EMAIL=? ,LOGIN=?, UPDATE_DATE     WHERE EMP_ID = ?";
 		Object[] tabParam = { emp.getLastname(), emp.getFirstname(), emp.getPhoneNumber(), emp.getPassword(),
-				emp.getEmail(), emp.getLogin(), emp.getId() };
+				emp.getEmail(), emp.getLogin(), emp.getId(), emp.getUpdateDate() };
 		this.getEntityManager().updateAvecParamGenerique(REQ_SQL, tabParam);
 	}
 
@@ -45,6 +45,7 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 					String phoneNumber = resultat.getString("PHONE_NUMBER");
 					String password = resultat.getString("PASSWORD");
 					Date creationDate = resultat.getDate("CREATION_DATE");
+					Date updateDate = resultat.getDate("UPDATE_DATE");
 					String email = resultat.getString("EMAIL");
 					String login = resultat.getString("LOGIN");
 					GpEmployee foundEmp = new GpEmployee();
@@ -57,7 +58,9 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 					foundEmp.setPhoneNumber(phoneNumber);
 					foundEmp.setEmail(email);
 					foundEmp.setLogin(login);
+					foundEmp.setUpdateDate(updateDate);
 					empList.add(foundEmp);
+					
 				}
 				resultat.close();
 			} catch (SQLException e) {
@@ -84,6 +87,7 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 					Date creationDate = resultat.getDate("CREATION_DATE");
 					String email = resultat.getString("EMAIL");
 					String login = resultat.getString("LOGIN");
+					Date updateDate = resultat.getDate("UPDATE_DATE");
 					foundEmp = new GpEmployee();
 					foundEmp.setId(empId);
 					foundEmp.setFileNumber(fileNumber);
@@ -94,6 +98,7 @@ public class GpEmployeeDAOImpl extends GpAbstractEmployeeDAOImpl<GpEmployee> imp
 					foundEmp.setPhoneNumber(phoneNumber);
 					foundEmp.setEmail(email);
 					foundEmp.setLogin(login);
+					foundEmp.setUpdateDate(updateDate);
 				}
 				resultat.close();
 			} catch (SQLException e) {
